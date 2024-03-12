@@ -30,7 +30,6 @@ public class DatabaseInitializer {
 
         } catch (SQLException e) {
             System.out.println("An error occurred while connecting to the database.");
-            e.printStackTrace();
         }
 
     }

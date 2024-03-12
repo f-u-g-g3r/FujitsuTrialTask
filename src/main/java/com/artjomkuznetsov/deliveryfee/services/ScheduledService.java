@@ -25,8 +25,8 @@ import java.util.List;
 @Service
 @EnableScheduling
 public class ScheduledService {
-    public static final String ESTONIAN_WEATHER_API_URL = "https://www.ilmateenistus.ee/ilma_andmed/xml/observations.php";
-    public static final  List<String> STATIONS = List.of("Tallinn-Harku", "Tartu-Tõravere", "Pärnu");
+    private static final String ESTONIAN_WEATHER_API_URL = "https://www.ilmateenistus.ee/ilma_andmed/xml/observations.php";
+    private static final  List<String> STATIONS = List.of("Tallinn-Harku", "Tartu-Tõravere", "Pärnu");
 
     private final RestTemplate restTemplate;
     private final WeatherDataRepository weatherDataRepository;
@@ -37,8 +37,12 @@ public class ScheduledService {
         this.weatherDataRepository = weatherDataRepository;
     }
 
-    //@Scheduled(cron = "0 15 * * * *")
-    @Scheduled(cron = "*/5 * * * * *")
+    /**
+     * This method retrieves weather data from the Estonian weather API, parses XML responses,
+     * and saves relevant observations to the database.
+     * It's scheduled to run periodically using the @Scheduled annotation with a specified cron expression.
+     */
+    @Scheduled(cron = "*/5 * * * * *")//@Scheduled(cron = "0 15 * * * *")
     public void getWeatherDataFromAPI() {
         String responseData = restTemplate.getForObject(ESTONIAN_WEATHER_API_URL, String.class);
         if (responseData != null) {

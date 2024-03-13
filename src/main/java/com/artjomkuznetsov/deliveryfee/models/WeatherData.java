@@ -19,8 +19,7 @@ public class WeatherData {
     public WeatherData() {
     }
 
-    public WeatherData(Long id, String station, String stationWMO, float airTemperature, float windSpeed, String weatherPhenomenon, LocalDateTime observationTimestamp) {
-        this.id = id;
+    public WeatherData(String station, String stationWMO, float airTemperature, float windSpeed, String weatherPhenomenon, LocalDateTime observationTimestamp) {
         this.station = station;
         this.stationWMO = stationWMO;
         this.airTemperature = airTemperature;

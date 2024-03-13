@@ -13,12 +13,11 @@ public class RegionalBaseFee {
 
     public RegionalBaseFee() {}
 
-    public RegionalBaseFee(Long id, String city, int carFee, int bikeFee, int scooterFee) {
-        this.id = id;
+    public RegionalBaseFee(String city, float carFee, float scooterFee, float bikeFee) {
         this.city = city;
         this.carFee = carFee;
-        this.bikeFee = bikeFee;
         this.scooterFee = scooterFee;
+        this.bikeFee = bikeFee;
     }
 
     public Long getId() {

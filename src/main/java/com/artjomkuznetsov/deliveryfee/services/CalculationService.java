@@ -3,6 +3,7 @@ package com.artjomkuznetsov.deliveryfee.services;
 import com.artjomkuznetsov.deliveryfee.models.RegionalBaseFee;
 import com.artjomkuznetsov.deliveryfee.repositories.RegionalBaseFeeRepository;
 import com.artjomkuznetsov.deliveryfee.repositories.WeatherDataRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class CalculationService {
     private final WeatherDataRepository weatherDataRepository;
     private final RegionalBaseFeeRepository baseFeeRepository;
 
+    @Autowired
     public CalculationService(WeatherDataRepository weatherDataRepository, RegionalBaseFeeRepository baseFeeRepository) {
         this.weatherDataRepository = weatherDataRepository;
         this.baseFeeRepository = baseFeeRepository;
@@ -28,8 +30,7 @@ public class CalculationService {
         if (city != null && CITIES.containsKey(city.toLowerCase())) {
             if (transport != null && TRANSPORTS.contains(transport.toLowerCase())) {
                 float baseFee = calculateRegionalBaseFee(city.toLowerCase(), transport.toLowerCase());
-
-
+                return baseFee;
             }
         }
         return 0;

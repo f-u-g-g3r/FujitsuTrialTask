@@ -26,6 +26,24 @@ public class DatabaseInitializer {
                     "INSERT INTO regional_base_fee (city, car_fee, scooter_fee, bike_fee) VALUES " +
                         "('Tallinn', 4.0, 3.5, 3.0), ('Tartu', 3.5, 3.0, 2.5), ('Pärnu', 3.0, 2.5, 2.0);");
 
+            Statement insertAirTemperatureConditions = connection.createStatement();
+            insertAirTemperatureConditions.execute(
+                    "INSERT INTO air_temperature_conditions " +
+                            "(vehicle_types, less_than, less_than_fee, between_min, between_max, between_fee) VALUES " +
+                            "('scooter, bike', -10.0, 1.0, -10.0, 0, 0.5)");
+
+            Statement insertWindSpeedConditions = connection.createStatement();
+            insertWindSpeedConditions.execute(
+                    "INSERT INTO wind_speed_conditions " +
+                            "(vehicle_types, between_min, between_max, between_fee, forbidden_speed) VALUES " +
+                            "('bike', 10.0, 20.0, 0.5, 20)");
+
+            Statement insertWeatherPhenomenonConditions = connection.createStatement();
+            insertWeatherPhenomenonConditions.execute(
+                    "INSERT INTO weather_phenomenon_conditions " +
+                            "(vehicle_types, snow_or_sleet_fee, rain_fee, forbidden_phenomenons) VALUES " +
+                            "('scooter, bike', 1.0, 0.5, 'glaze, hail, thunder')");
+
 
 
         } catch (SQLException e) {

@@ -60,6 +60,10 @@ public class ScheduledService {
                     if (node.getNodeType() == Node.ELEMENT_NODE) {
                         Element element = (Element) node;
                         String stationName = element.getElementsByTagName("name").item(0).getTextContent();
+
+                        Long timestamp = Long.parseLong(doc.getElementsByTagName("observations").item(0)
+                                .getAttributes().getNamedItem("timestamp").getTextContent());
+
                         if (STATIONS.contains(stationName)) {
                             WeatherData weatherData = new WeatherData();
                             weatherData.setStation(stationName);
@@ -67,7 +71,7 @@ public class ScheduledService {
                             weatherData.setAirTemperature(Float.parseFloat(element.getElementsByTagName("airtemperature").item(0).getTextContent()));
                             weatherData.setWeatherPhenomenon(element.getElementsByTagName("phenomenon").item(0).getTextContent());
                             weatherData.setWindSpeed(Float.parseFloat(element.getElementsByTagName("windspeed").item(0).getTextContent()));
-                            weatherData.setObservationTimestamp(LocalDateTime.now());
+                            weatherData.setObservationTimestamp(timestamp);
                             weatherDataRepository.save(weatherData);
                         }
                     }

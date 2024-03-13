@@ -14,12 +14,12 @@ public class WeatherData {
     private float airTemperature;
     private float windSpeed;
     private String weatherPhenomenon;
-    private LocalDateTime observationTimestamp;
+    private Long observationTimestamp;
 
     public WeatherData() {
     }
 
-    public WeatherData(String station, String stationWMO, float airTemperature, float windSpeed, String weatherPhenomenon, LocalDateTime observationTimestamp) {
+    public WeatherData(String station, String stationWMO, float airTemperature, float windSpeed, String weatherPhenomenon, Long observationTimestamp) {
         this.station = station;
         this.stationWMO = stationWMO;
         this.airTemperature = airTemperature;
@@ -76,11 +76,11 @@ public class WeatherData {
         this.weatherPhenomenon = weatherPhenomenon;
     }
 
-    public LocalDateTime getObservationTimestamp() {
+    public Long getObservationTimestamp() {
         return observationTimestamp;
     }
 
-    public void setObservationTimestamp(LocalDateTime observationTimestamp) {
+    public void setObservationTimestamp(Long observationTimestamp) {
         this.observationTimestamp = observationTimestamp;
     }
 

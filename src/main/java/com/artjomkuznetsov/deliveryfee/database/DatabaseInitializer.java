@@ -24,7 +24,7 @@ public class DatabaseInitializer {
             Statement insertRegionalBaseFee = connection.createStatement();
             insertRegionalBaseFee.execute(
                     "INSERT INTO regional_base_fee (city, car_fee, scooter_fee, bike_fee) VALUES " +
-                        "('Tallinn', 4.0, 3.5, 3.0), ('Tartu', 3.5, 3.0, 2.5), ('Pärnu', 3.0, 2.5, 2.0);");
+                        "('tallinn', 4.0, 3.5, 3.0), ('tartu', 3.5, 3.0, 2.5), ('pärnu', 3.0, 2.5, 2.0);");
 
             Statement insertAirTemperatureConditions = connection.createStatement();
             insertAirTemperatureConditions.execute(
@@ -42,9 +42,7 @@ public class DatabaseInitializer {
             insertWeatherPhenomenonConditions.execute(
                     "INSERT INTO weather_phenomenon_conditions " +
                             "(vehicle_types, snow_or_sleet_fee, rain_fee, forbidden_phenomenons) VALUES " +
-                            "('scooter, bike', 1.0, 0.5, 'glaze, hail, thunder')");
-
-
+                            "('scooter, bike', 1.0, 0.5, 'Glaze, Hail, Thunder')");
 
         } catch (SQLException e) {
             System.out.println("An error occurred while connecting to the database.");

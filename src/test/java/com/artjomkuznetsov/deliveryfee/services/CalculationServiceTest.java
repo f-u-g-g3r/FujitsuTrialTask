@@ -1,8 +1,7 @@
 package com.artjomkuznetsov.deliveryfee.services;
 
 import com.artjomkuznetsov.deliveryfee.models.RegionalBaseFee;
-import com.artjomkuznetsov.deliveryfee.repositories.RegionalBaseFeeRepository;
-import com.artjomkuznetsov.deliveryfee.repositories.WeatherDataRepository;
+import com.artjomkuznetsov.deliveryfee.repositories.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,9 +22,16 @@ class CalculationServiceTest {
     @Mock
     private RegionalBaseFeeRepository baseFeeRepository;
 
-    RegionalBaseFee regionalBaseFeeTallinn = new RegionalBaseFee("Tallinn", 4.0f, 3.5f, 3.0f);
-    RegionalBaseFee regionalBaseFeeTartu = new RegionalBaseFee("Tartu", 3.5f, 3.0f, 2.5f);
-    RegionalBaseFee regionalBaseFeeParnu = new RegionalBaseFee("Pärnu", 3.0f, 2.5f, 2.0f);
+    @Mock
+    private AirTemperatureConditionsRepository airTemperatureRepository;
+    @Mock
+    private WeatherPhenomenonConditionsRepository weatherPhenomenonRepository;
+    @Mock
+    private WindSpeedConditionsRepository windSpeedRepository;
+
+    RegionalBaseFee regionalBaseFeeTallinn = new RegionalBaseFee("tallinn", 4.0f, 3.5f, 3.0f);
+    RegionalBaseFee regionalBaseFeeTartu = new RegionalBaseFee("tartu", 3.5f, 3.0f, 2.5f);
+    RegionalBaseFee regionalBaseFeeParnu = new RegionalBaseFee("pärnu", 3.0f, 2.5f, 2.0f);
 
     @BeforeEach
     void setUp() {

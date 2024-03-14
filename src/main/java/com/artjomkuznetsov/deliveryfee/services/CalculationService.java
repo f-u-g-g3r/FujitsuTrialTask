@@ -49,7 +49,7 @@ public class CalculationService {
         return 0;
     }
 
-    private float calculateRegionalBaseFee(String city, String transport) {
+    public float calculateRegionalBaseFee(String city, String transport) {
         RegionalBaseFee RBF = baseFeeRepository.findByCity(city);
 
         return switch (transport) {
@@ -60,15 +60,12 @@ public class CalculationService {
         };
     }
 
-    private float calculateExtraFee(String city, String transport) {
+    public float calculateExtraFee(String city, String transport) {
         WeatherData weatherData = weatherDataRepository.findFirstByStationOrderByObservationTimestampDesc(CITIES.get(city));
 
-        AirTemperatureConditions airConditions = airTemperatureRepository.findById(1L)
-                .orElse(null);
-        WindSpeedConditions windConditions = windSpeedRepository.findById(1L)
-                .orElse(null);
-        WeatherPhenomenonConditions phenomenonConditions = weatherPhenomenonRepository.findById(1L)
-                .orElse(null);
+        AirTemperatureConditions airConditions = airTemperatureRepository.findFirstBy();
+        WindSpeedConditions windConditions = windSpeedRepository.findFirstBy();
+        WeatherPhenomenonConditions phenomenonConditions = weatherPhenomenonRepository.findFirstBy();
         float extraFee = 0;
         if (weatherData != null && airConditions != null && windConditions != null && phenomenonConditions != null) {
             if (airConditions.getVehicleTypes().contains(transport)) {

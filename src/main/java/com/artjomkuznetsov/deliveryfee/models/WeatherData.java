@@ -83,6 +83,4 @@ public class WeatherData {
     public void setObservationTimestamp(Long observationTimestamp) {
         this.observationTimestamp = observationTimestamp;
     }
-
-
 }

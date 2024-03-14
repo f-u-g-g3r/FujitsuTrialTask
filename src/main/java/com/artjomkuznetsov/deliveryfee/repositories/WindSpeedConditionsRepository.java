@@ -4,4 +4,5 @@ import com.artjomkuznetsov.deliveryfee.models.extra_weather_fee.WindSpeedConditi
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface WindSpeedConditionsRepository extends JpaRepository<WindSpeedConditions, Long> {
+    WindSpeedConditions findFirstBy();
 }

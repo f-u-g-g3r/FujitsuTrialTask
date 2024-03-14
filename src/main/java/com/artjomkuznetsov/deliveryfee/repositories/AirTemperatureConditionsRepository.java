@@ -4,4 +4,5 @@ import com.artjomkuznetsov.deliveryfee.models.extra_weather_fee.AirTemperatureCo
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AirTemperatureConditionsRepository extends JpaRepository<AirTemperatureConditions, Long> {
+    AirTemperatureConditions findFirstBy();
 }

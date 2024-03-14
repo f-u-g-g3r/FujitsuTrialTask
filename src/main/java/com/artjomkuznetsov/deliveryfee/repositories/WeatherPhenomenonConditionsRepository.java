@@ -4,5 +4,5 @@ import com.artjomkuznetsov.deliveryfee.models.extra_weather_fee.WeatherPhenomeno
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface WeatherPhenomenonConditionsRepository extends JpaRepository<WeatherPhenomenonConditions, Long> {
-
+    WeatherPhenomenonConditions findFirstBy();
 }

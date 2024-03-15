@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class CalculationServiceTest {
@@ -195,7 +196,7 @@ class CalculationServiceTest {
     @Test
     void calculateExtraFee_tallinn_scooter_phenomenon_snow() {
         Mockito.lenient().when(weatherDataRepository.findFirstByStationOrderByObservationTimestampDesc("Tallinn-Harku"))
-                .thenReturn(new WeatherData("Tallinn-Harku", "26038", 10, 5, "Snow", 1710412650L));
+                .thenReturn(new WeatherData("Tallinn-Harku", "26038", 10, 5, "Drifting snow", 1710412650L));
 
         float extraFee = calculationService.calculateExtraFee("tallinn", "scooter");
         Assertions.assertEquals(1, extraFee);
@@ -204,7 +205,7 @@ class CalculationServiceTest {
     @Test
     void calculateExtraFee_tallinn_scooter_phenomenon_sleet() {
         Mockito.lenient().when(weatherDataRepository.findFirstByStationOrderByObservationTimestampDesc("Tallinn-Harku"))
-                .thenReturn(new WeatherData("Tallinn-Harku", "26038", 10, 5, "Sleet", 1710412650L));
+                .thenReturn(new WeatherData("Tallinn-Harku", "26038", 10, 5, "Light sleet", 1710412650L));
 
         float extraFee = calculationService.calculateExtraFee("tallinn", "scooter");
         Assertions.assertEquals(1, extraFee);
@@ -213,7 +214,7 @@ class CalculationServiceTest {
     @Test
     void calculateExtraFee_tallinn_scooter_phenomenon_rain() {
         Mockito.lenient().when(weatherDataRepository.findFirstByStationOrderByObservationTimestampDesc("Tallinn-Harku"))
-                .thenReturn(new WeatherData("Tallinn-Harku", "26038", 10, 5, "Rain", 1710412650L));
+                .thenReturn(new WeatherData("Tallinn-Harku", "26038", 10, 5, "Heavy shower", 1710412650L));
 
         float extraFee = calculationService.calculateExtraFee("tallinn", "scooter");
         Assertions.assertEquals(0.5, extraFee);
@@ -267,7 +268,7 @@ class CalculationServiceTest {
     @Test
     void calculateExtraFee_tallinn_bike_air_lessThan_wind_between_snow() {
         Mockito.lenient().when(weatherDataRepository.findFirstByStationOrderByObservationTimestampDesc("Tallinn-Harku"))
-                .thenReturn(new WeatherData("Tallinn-Harku", "26038", -12, 15, "Snow", 1710412650L));
+                .thenReturn(new WeatherData("Tallinn-Harku", "26038", -12, 15, "Light snowfall", 1710412650L));
 
         float extraFee = calculationService.calculateExtraFee("tallinn", "bike");
         Assertions.assertEquals(2.5, extraFee);
@@ -276,7 +277,7 @@ class CalculationServiceTest {
     @Test
     void calculateExtraFee_tallinn_bike_air_lessThan_wind_between_rain() {
         Mockito.lenient().when(weatherDataRepository.findFirstByStationOrderByObservationTimestampDesc("Tallinn-Harku"))
-                .thenReturn(new WeatherData("Tallinn-Harku", "26038", -12, 15, "Rain", 1710412650L));
+                .thenReturn(new WeatherData("Tallinn-Harku", "26038", -12, 15, "Light rain", 1710412650L));
 
         float extraFee = calculationService.calculateExtraFee("tallinn", "bike");
         Assertions.assertEquals(2, extraFee);
@@ -296,7 +297,7 @@ class CalculationServiceTest {
     void calculateTotalFee_tallinn_bike_air_lessThan() {
         Mockito.lenient().when(weatherDataRepository.findFirstByStationOrderByObservationTimestampDesc("Tallinn-Harku"))
                 .thenReturn(new WeatherData("Tallinn-Harku", "26038", -12, 5, "", 1710412650L));
-        float fee = calculationService.calculateFee("tallinn", "bike");
+        float fee = calculationService.calculateFee(Optional.of("tallinn"), Optional.of("bike"));
         Assertions.assertEquals(4, fee);
     }
 
@@ -304,7 +305,7 @@ class CalculationServiceTest {
     void calculateTotalFee_tallinn_bike_air_lessThan_wind_between() {
         Mockito.lenient().when(weatherDataRepository.findFirstByStationOrderByObservationTimestampDesc("Tallinn-Harku"))
                 .thenReturn(new WeatherData("Tallinn-Harku", "26038", -12, 15, "", 1710412650L));
-        float fee = calculationService.calculateFee("tallinn", "bike");
+        float fee = calculationService.calculateFee(Optional.of("tallinn"), Optional.of("bike"));
         Assertions.assertEquals(4.5, fee);
     }
 }

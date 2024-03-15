@@ -42,7 +42,7 @@ public class DatabaseInitializer {
             insertWeatherPhenomenonConditions.execute(
                     "INSERT INTO weather_phenomenon_conditions " +
                             "(vehicle_types, snow_or_sleet_fee, rain_fee, forbidden_phenomenons) VALUES " +
-                            "('scooter, bike', 1.0, 0.5, 'Glaze, Hail, Thunder')");
+                            "('scooter, bike', 1.0, 0.5, 'Glaze, Hail, Thunder, Thunderstorm')");
 
         } catch (SQLException e) {
             System.out.println("An error occurred while connecting to the database.");

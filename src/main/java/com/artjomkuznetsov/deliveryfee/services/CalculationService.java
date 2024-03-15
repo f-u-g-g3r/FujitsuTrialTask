@@ -34,6 +34,13 @@ public class CalculationService {
         this.windSpeedRepository = windSpeedRepository;
     }
 
+
+    /**
+     * Calculates total fee based on the city, transport and current weather data.
+     * @param city The city for which calculations will be made.
+     * @param transport Transport for which calculations will be made.
+     * @return Total fee or -1 if the use of the specified transport is forbidden due to the current weather.
+     */
     public float calculateFee(String city, String transport) {
         if (city != null && CITIES.containsKey(city.toLowerCase())) {
             if (transport != null && TRANSPORTS.contains(transport.toLowerCase())) {
@@ -49,6 +56,12 @@ public class CalculationService {
         return 0;
     }
 
+    /**
+     * Calculates fee only for regional rules, based on the city and transport.
+     * @param city The city for which calculations will be made.
+     * @param transport Transport for which calculations will be made.
+     * @return Regional base fee.
+     */
     public float calculateRegionalBaseFee(String city, String transport) {
         RegionalBaseFee RBF = baseFeeRepository.findByCity(city);
 
@@ -60,6 +73,12 @@ public class CalculationService {
         };
     }
 
+    /**
+     * Calculates fee based on the specified city, transport and weather conditions.
+     * @param city The city which specified the weather station.
+     * @param transport Transport for which conditions will be checked.
+     * @return Extra fee for weather conditions.
+     */
     public float calculateExtraFee(String city, String transport) {
         WeatherData weatherData = weatherDataRepository.findFirstByStationOrderByObservationTimestampDesc(CITIES.get(city));
 

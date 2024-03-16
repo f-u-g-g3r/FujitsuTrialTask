@@ -1,15 +1,15 @@
 package com.artjomkuznetsov.deliveryfee.models.extra_weather_fee;
 
-import com.artjomkuznetsov.deliveryfee.converter.StringListConverter;
+import com.artjomkuznetsov.deliveryfee.utils.StringListConverter;
+import com.artjomkuznetsov.deliveryfee.models.ExtraWeatherFee;
 import jakarta.persistence.*;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "air_temperature_conditions")
-public class AirTemperatureConditions {
+public class AirTemperatureConditions extends ExtraWeatherFee {
     private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
 
 

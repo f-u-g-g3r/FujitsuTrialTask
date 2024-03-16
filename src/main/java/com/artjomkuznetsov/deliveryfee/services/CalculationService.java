@@ -1,7 +1,8 @@
 package com.artjomkuznetsov.deliveryfee.services;
 
-import com.artjomkuznetsov.deliveryfee.controllers.exceptions.regionalBaseFeeNotFound.RegionalBaseFeeNotFoundException;
-import com.artjomkuznetsov.deliveryfee.controllers.exceptions.vehicleForbidden.VehicleForbiddenException;
+import com.artjomkuznetsov.deliveryfee.exceptions.ExtraWeatherConditionsNotFoundException;
+import com.artjomkuznetsov.deliveryfee.exceptions.RegionalBaseFeeNotFoundException;
+import com.artjomkuznetsov.deliveryfee.exceptions.VehicleForbiddenException;
 import com.artjomkuznetsov.deliveryfee.models.RegionalBaseFee;
 import com.artjomkuznetsov.deliveryfee.models.WeatherData;
 import com.artjomkuznetsov.deliveryfee.models.extra_weather_fee.AirTemperatureConditions;
@@ -96,9 +97,12 @@ public class CalculationService {
     public float calculateExtraFee(String city, String vehicle) {
         WeatherData weatherData = weatherDataRepository.findFirstByStationOrderByObservationTimestampDesc(CITIES.get(city));
 
-        AirTemperatureConditions airConditions = airTemperatureRepository.findFirstBy();
-        WindSpeedConditions windConditions = windSpeedRepository.findFirstBy();
-        WeatherPhenomenonConditions phenomenonConditions = weatherPhenomenonRepository.findFirstBy();
+        AirTemperatureConditions airConditions = airTemperatureRepository.findFirstBy()
+                .orElseThrow(ExtraWeatherConditionsNotFoundException::new);
+        WindSpeedConditions windConditions = windSpeedRepository.findFirstBy()
+                .orElseThrow(ExtraWeatherConditionsNotFoundException::new);
+        WeatherPhenomenonConditions phenomenonConditions = weatherPhenomenonRepository.findFirstBy()
+                .orElseThrow(ExtraWeatherConditionsNotFoundException::new);
         float extraFee = 0;
         if (weatherData != null && airConditions != null && windConditions != null && phenomenonConditions != null) {
             if (airConditions.getVehicleTypes().contains(vehicle)) {

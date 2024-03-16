@@ -6,6 +6,7 @@ import com.artjomkuznetsov.deliveryfee.models.extra_weather_fee.AirTemperatureCo
 import com.artjomkuznetsov.deliveryfee.models.extra_weather_fee.WeatherPhenomenonConditions;
 import com.artjomkuznetsov.deliveryfee.models.extra_weather_fee.WindSpeedConditions;
 import com.artjomkuznetsov.deliveryfee.repositories.*;
+import org.apache.coyote.BadRequestException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -53,68 +54,68 @@ class CalculationServiceTest {
 
     @BeforeEach
     void setUp() {
-        Mockito.lenient().when(baseFeeRepository.findByCity("tallinn")).thenReturn(regionalBaseFeeTallinn);
-        Mockito.lenient().when(baseFeeRepository.findByCity("tartu")).thenReturn(regionalBaseFeeTartu);
-        Mockito.lenient().when(baseFeeRepository.findByCity("pärnu")).thenReturn(regionalBaseFeeParnu);
+        Mockito.lenient().when(baseFeeRepository.findByCity("tallinn")).thenReturn(Optional.of(regionalBaseFeeTallinn));
+        Mockito.lenient().when(baseFeeRepository.findByCity("tartu")).thenReturn(Optional.of(regionalBaseFeeTartu));
+        Mockito.lenient().when(baseFeeRepository.findByCity("pärnu")).thenReturn(Optional.of(regionalBaseFeeParnu));
 
-        Mockito.lenient().when(airTemperatureRepository.findFirstBy()).thenReturn(airTemperatureConditions);
-        Mockito.lenient().when(windSpeedRepository.findFirstBy()).thenReturn(windSpeedConditions);
-        Mockito.lenient().when(weatherPhenomenonRepository.findFirstBy()).thenReturn(weatherPhenomenonConditions);
+        Mockito.lenient().when(airTemperatureRepository.findFirstBy()).thenReturn(Optional.of(airTemperatureConditions));
+        Mockito.lenient().when(windSpeedRepository.findFirstBy()).thenReturn(Optional.of(windSpeedConditions));
+        Mockito.lenient().when(weatherPhenomenonRepository.findFirstBy()).thenReturn(Optional.of(weatherPhenomenonConditions));
     }
 
     // Car
     @Test
-    void calculateRegionalBaseFee_tallinn_car() {
+    void calculateRegionalBaseFee_Tallinn_Car_Returns4() {
         float fee = calculationService.calculateRegionalBaseFee("tallinn", "car");
         Assertions.assertEquals(4.0, fee);
     }
 
     @Test
-    void calculateRegionalBaseFee_tartu_car() {
+    void calculateRegionalBaseFee_Tartu_Car_Returns3_5() {
         float fee = calculationService.calculateRegionalBaseFee("tartu", "car");
         Assertions.assertEquals(3.5, fee);
     }
 
     @Test
-    void calculateRegionalBaseFee_parnu_car() {
+    void calculateRegionalBaseFee_Parnu_Car_Returns3() {
         float fee = calculationService.calculateRegionalBaseFee("pärnu", "car");
         Assertions.assertEquals(3.0, fee);
     }
 
     // Bike
     @Test
-    void calculateRegionalBaseFee_tallinn_bike() {
+    void calculateRegionalBaseFee_Tallinn_Bike_Returns3() {
         float fee = calculationService.calculateRegionalBaseFee("tallinn", "bike");
         Assertions.assertEquals(3.0, fee);
     }
 
     @Test
-    void calculateRegionalBaseFee_tartu_bike() {
+    void calculateRegionalBaseFee_Tartu_Bike_Returns2_5() {
         float fee = calculationService.calculateRegionalBaseFee("tartu", "bike");
         Assertions.assertEquals(2.5, fee);
     }
 
     @Test
-    void calculateRegionalBaseFee_parnu_bike() {
+    void calculateRegionalBaseFee_Parnu_Bike_Returns2() {
         float fee = calculationService.calculateRegionalBaseFee("pärnu", "bike");
         Assertions.assertEquals(2.0, fee);
     }
 
     // Scooter
     @Test
-    void calculateRegionalBaseFee_tallinn_scooter() {
+    void calculateRegionalBaseFee_Tallinn_Scooter_Returns3_5() {
         float fee = calculationService.calculateRegionalBaseFee("tallinn", "scooter");
         Assertions.assertEquals(3.5, fee);
     }
 
     @Test
-    void calculateRegionalBaseFee_tartu_scooter() {
+    void calculateRegionalBaseFee_Tartu_Scooter_Return3() {
         float fee = calculationService.calculateRegionalBaseFee("tartu", "scooter");
         Assertions.assertEquals(3.0, fee);
     }
 
     @Test
-    void calculateRegionalBaseFee_parnu_scooter() {
+    void calculateRegionalBaseFee_Parnu_Scooter_Returns2_5() {
         float fee = calculationService.calculateRegionalBaseFee("pärnu", "scooter");
         Assertions.assertEquals(2.5, fee);
     }
@@ -122,7 +123,7 @@ class CalculationServiceTest {
     // ---------------------------------------------------
 
     @Test
-    void calculateExtraFee_tallinn_scooter_air_lessThan() {
+    void calculateExtraFee_Tallinn_Scooter_AirTempMinus15_Returns1() {
         Mockito.lenient().when(weatherDataRepository.findFirstByStationOrderByObservationTimestampDesc("Tallinn-Harku"))
                 .thenReturn(new WeatherData("Tallinn-Harku", "26038", -15, 6, "", 1710412650L));
 
@@ -131,7 +132,7 @@ class CalculationServiceTest {
     }
 
     @Test
-    void calculateExtraFee_tallinn_bike_air_lessThan() {
+    void calculateExtraFee_Tallinn_Bike_AirTempMinus15_Returns1() {
         Mockito.lenient().when(weatherDataRepository.findFirstByStationOrderByObservationTimestampDesc("Tallinn-Harku"))
                 .thenReturn(new WeatherData("Tallinn-Harku", "26038", -15, 6, "", 1710412650L));
 
@@ -140,25 +141,25 @@ class CalculationServiceTest {
     }
 
     @Test
-    void calculateExtraFee_tallinn_scooter_air_between() {
+    void calculateExtraFee_Tallinn_Scooter_AirTempMinus5_Returns0_5() {
         Mockito.lenient().when(weatherDataRepository.findFirstByStationOrderByObservationTimestampDesc("Tallinn-Harku"))
-                .thenReturn(new WeatherData("Tallinn-Harku", "26038", -5.4f, 6, "", 1710412650L));
+                .thenReturn(new WeatherData("Tallinn-Harku", "26038", -5, 6, "", 1710412650L));
 
         float extraFee = calculationService.calculateExtraFee("tallinn", "scooter");
         Assertions.assertEquals(0.5, extraFee);
     }
 
     @Test
-    void calculateExtraFee_tallinn_bike_air_between() {
+    void calculateExtraFee_Tallinn_Bike_AirTempMinus5_Returns0_5() {
         Mockito.lenient().when(weatherDataRepository.findFirstByStationOrderByObservationTimestampDesc("Tallinn-Harku"))
-                .thenReturn(new WeatherData("Tallinn-Harku", "26038", -5.4f, 6, "", 1710412650L));
+                .thenReturn(new WeatherData("Tallinn-Harku", "26038", -5, 6, "", 1710412650L));
 
         float extraFee = calculationService.calculateExtraFee("tallinn", "bike");
         Assertions.assertEquals(0.5, extraFee);
     }
 
     @Test
-    void calculateExtraFee_tallinn_bike_air_normal() {
+    void calculateExtraFee_Tallinn_Bike_AirTempPlus10_Returns0() {
         Mockito.lenient().when(weatherDataRepository.findFirstByStationOrderByObservationTimestampDesc("Tallinn-Harku"))
                 .thenReturn(new WeatherData("Tallinn-Harku", "26038", 10, 6, "", 1710412650L));
 
@@ -167,7 +168,7 @@ class CalculationServiceTest {
     }
 
     @Test
-    void calculateExtraFee_tallinn_bike_wind_between() {
+    void calculateExtraFee_Tallinn_Bike_WindSpeed15_Returns0_5() {
         Mockito.lenient().when(weatherDataRepository.findFirstByStationOrderByObservationTimestampDesc("Tallinn-Harku"))
                 .thenReturn(new WeatherData("Tallinn-Harku", "26038", 10, 15, "", 1710412650L));
 
@@ -176,7 +177,7 @@ class CalculationServiceTest {
     }
 
     @Test
-    void calculateExtraFee_tallinn_bike_wind_normal() {
+    void calculateExtraFee_Tallinn_Bike_WindSpeed5_Returns0() {
         Mockito.lenient().when(weatherDataRepository.findFirstByStationOrderByObservationTimestampDesc("Tallinn-Harku"))
                 .thenReturn(new WeatherData("Tallinn-Harku", "26038", 10, 5, "", 1710412650L));
 
@@ -185,7 +186,7 @@ class CalculationServiceTest {
     }
 
     @Test
-    void calculateExtraFee_tallinn_bike_wind_forbidden() {
+    void calculateExtraFee_Tallinn_Bike_ForbiddenWindSpeed_ReturnsMinus1() {
         Mockito.lenient().when(weatherDataRepository.findFirstByStationOrderByObservationTimestampDesc("Tallinn-Harku"))
                 .thenReturn(new WeatherData("Tallinn-Harku", "26038", 10, 30, "", 1710412650L));
 
@@ -194,7 +195,7 @@ class CalculationServiceTest {
     }
 
     @Test
-    void calculateExtraFee_tallinn_scooter_phenomenon_snow() {
+    void calculateExtraFee_Tallinn_Scooter_DriftingSnow_Returns1() {
         Mockito.lenient().when(weatherDataRepository.findFirstByStationOrderByObservationTimestampDesc("Tallinn-Harku"))
                 .thenReturn(new WeatherData("Tallinn-Harku", "26038", 10, 5, "Drifting snow", 1710412650L));
 
@@ -203,7 +204,7 @@ class CalculationServiceTest {
     }
 
     @Test
-    void calculateExtraFee_tallinn_scooter_phenomenon_sleet() {
+    void calculateExtraFee_Tallinn_Scooter_LightSleet_Returns1() {
         Mockito.lenient().when(weatherDataRepository.findFirstByStationOrderByObservationTimestampDesc("Tallinn-Harku"))
                 .thenReturn(new WeatherData("Tallinn-Harku", "26038", 10, 5, "Light sleet", 1710412650L));
 
@@ -212,7 +213,7 @@ class CalculationServiceTest {
     }
 
     @Test
-    void calculateExtraFee_tallinn_scooter_phenomenon_rain() {
+    void calculateExtraFee_Tallinn_Scooter_HeavyShower_Returns0_5() {
         Mockito.lenient().when(weatherDataRepository.findFirstByStationOrderByObservationTimestampDesc("Tallinn-Harku"))
                 .thenReturn(new WeatherData("Tallinn-Harku", "26038", 10, 5, "Heavy shower", 1710412650L));
 
@@ -221,7 +222,7 @@ class CalculationServiceTest {
     }
 
     @Test
-    void calculateExtraFee_tallinn_scooter_phenomenon_glaze() {
+    void calculateExtraFee_Tallinn_Scooter_Glaze_ReturnsMinus1() {
         Mockito.lenient().when(weatherDataRepository.findFirstByStationOrderByObservationTimestampDesc("Tallinn-Harku"))
                 .thenReturn(new WeatherData("Tallinn-Harku", "26038", 10, 5, "Glaze", 1710412650L));
 
@@ -230,7 +231,7 @@ class CalculationServiceTest {
     }
 
     @Test
-    void calculateExtraFee_tallinn_scooter_phenomenon_hail() {
+    void calculateExtraFee_Tallinn_Scooter_Hail_ReturnsMinus1() {
         Mockito.lenient().when(weatherDataRepository.findFirstByStationOrderByObservationTimestampDesc("Tallinn-Harku"))
                 .thenReturn(new WeatherData("Tallinn-Harku", "26038", 10, 5, "Hail", 1710412650L));
 
@@ -239,7 +240,7 @@ class CalculationServiceTest {
     }
 
     @Test
-    void calculateExtraFee_tallinn_scooter_phenomenon_thunder() {
+    void calculateExtraFee_Tallinn_Scooter_Thunder_ReturnsMinus1() {
         Mockito.lenient().when(weatherDataRepository.findFirstByStationOrderByObservationTimestampDesc("Tallinn-Harku"))
                 .thenReturn(new WeatherData("Tallinn-Harku", "26038", 10, 5, "Thunder", 1710412650L));
 
@@ -248,7 +249,7 @@ class CalculationServiceTest {
     }
 
     @Test
-    void calculateExtraFee_tallinn_car_phenomenon_thunder() {
+    void calculateExtraFee_Tallinn_Car_Thunder_Returns0() {
         Mockito.lenient().when(weatherDataRepository.findFirstByStationOrderByObservationTimestampDesc("Tallinn-Harku"))
                 .thenReturn(new WeatherData("Tallinn-Harku", "26038", 10, 5, "Thunder", 1710412650L));
 
@@ -257,7 +258,7 @@ class CalculationServiceTest {
     }
 
     @Test
-    void calculateExtraFee_tallinn_bike_air_lessThan_wind_between() {
+    void calculateExtraFee_Tallinn_Bike_AirTempMinus12_WindSpeed15_Returns1_5() {
         Mockito.lenient().when(weatherDataRepository.findFirstByStationOrderByObservationTimestampDesc("Tallinn-Harku"))
                 .thenReturn(new WeatherData("Tallinn-Harku", "26038", -12, 15, "", 1710412650L));
 
@@ -266,7 +267,7 @@ class CalculationServiceTest {
     }
 
     @Test
-    void calculateExtraFee_tallinn_bike_air_lessThan_wind_between_snow() {
+    void calculateExtraFee_Tallinn_Bike_AirTempMinus12_WindSpeed15_Snow_Returns2_5() {
         Mockito.lenient().when(weatherDataRepository.findFirstByStationOrderByObservationTimestampDesc("Tallinn-Harku"))
                 .thenReturn(new WeatherData("Tallinn-Harku", "26038", -12, 15, "Light snowfall", 1710412650L));
 
@@ -275,7 +276,7 @@ class CalculationServiceTest {
     }
 
     @Test
-    void calculateExtraFee_tallinn_bike_air_lessThan_wind_between_rain() {
+    void calculateExtraFee_Tallinn_Bike_AirTempMinus12_WindSpeed15_Rain_Returns2() {
         Mockito.lenient().when(weatherDataRepository.findFirstByStationOrderByObservationTimestampDesc("Tallinn-Harku"))
                 .thenReturn(new WeatherData("Tallinn-Harku", "26038", -12, 15, "Light rain", 1710412650L));
 
@@ -284,7 +285,7 @@ class CalculationServiceTest {
     }
 
     @Test
-    void calculateExtraFee_tallinn_bike_air_lessThan_wind_between_thunder() {
+    void calculateExtraFee_Tallinn_Bike_AirTempMinus12_WindSpeed15_Thunder_ReturnsMinus1() {
         Mockito.lenient().when(weatherDataRepository.findFirstByStationOrderByObservationTimestampDesc("Tallinn-Harku"))
                 .thenReturn(new WeatherData("Tallinn-Harku", "26038", -12, 15, "Thunder", 1710412650L));
 
@@ -294,7 +295,7 @@ class CalculationServiceTest {
 
 
     @Test
-    void calculateTotalFee_tallinn_bike_air_lessThan() {
+    void calculateTotalFee_Tallinn_Bike_AirTempMinus12_Returns4() throws BadRequestException {
         Mockito.lenient().when(weatherDataRepository.findFirstByStationOrderByObservationTimestampDesc("Tallinn-Harku"))
                 .thenReturn(new WeatherData("Tallinn-Harku", "26038", -12, 5, "", 1710412650L));
         float fee = calculationService.calculateFee(Optional.of("tallinn"), Optional.of("bike"));
@@ -302,7 +303,7 @@ class CalculationServiceTest {
     }
 
     @Test
-    void calculateTotalFee_tallinn_bike_air_lessThan_wind_between() {
+    void calculateTotalFee_Tallinn_Bike_AirTempMinus12_WindSpeed15_Returns4_5() throws BadRequestException {
         Mockito.lenient().when(weatherDataRepository.findFirstByStationOrderByObservationTimestampDesc("Tallinn-Harku"))
                 .thenReturn(new WeatherData("Tallinn-Harku", "26038", -12, 15, "", 1710412650L));
         float fee = calculationService.calculateFee(Optional.of("tallinn"), Optional.of("bike"));

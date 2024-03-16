@@ -1,6 +1,7 @@
-package com.artjomkuznetsov.deliveryfee.controllers.exceptions.vehicleForbidden;
+package com.artjomkuznetsov.deliveryfee.advices;
 
-import com.artjomkuznetsov.deliveryfee.controllers.exceptions.ErrorResponse;
+import com.artjomkuznetsov.deliveryfee.controllers.responses.ErrorResponse;
+import com.artjomkuznetsov.deliveryfee.exceptions.VehicleForbiddenException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class VehicleForbiddenAdvice extends ResponseEntityExceptionHandler {
     @ExceptionHandler(VehicleForbiddenException.class)
     protected ResponseEntity<Object> transportForbiddenHandler(RuntimeException exception, WebRequest request) {
-        ErrorResponse errorResponse = new ErrorResponse("Transport is forbidden due to weather conditions");
+        ErrorResponse errorResponse = new ErrorResponse(exception.getMessage());
         return handleExceptionInternal(exception, errorResponse, new HttpHeaders(), HttpStatus.FORBIDDEN, request);
     }
 }

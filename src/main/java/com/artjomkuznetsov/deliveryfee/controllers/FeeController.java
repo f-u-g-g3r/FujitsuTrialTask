@@ -1,7 +1,7 @@
 package com.artjomkuznetsov.deliveryfee.controllers;
 
 
-import com.artjomkuznetsov.deliveryfee.controllers.exceptions.vehicleForbidden.VehicleForbiddenException;
+import com.artjomkuznetsov.deliveryfee.exceptions.VehicleForbiddenException;
 import com.artjomkuznetsov.deliveryfee.controllers.responses.FeeResponse;
 import com.artjomkuznetsov.deliveryfee.services.CalculationService;
 import org.apache.coyote.BadRequestException;

@@ -7,6 +7,8 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 
 @RestController
 @RequestMapping("/api/base-fees")
@@ -17,18 +19,33 @@ public class BaseFeeController {
         this.baseFeeService = baseFeeService;
     }
 
+    /**
+     *
+     * @return
+     */
     @GetMapping
     public CollectionModel<EntityModel<RegionalBaseFee>> all() {
         return baseFeeService.getAllBaseFees();
     }
 
+    /**
+     *
+     * @param city
+     * @return
+     */
     @GetMapping("/{city}")
     public EntityModel<RegionalBaseFee> oneByCity(@PathVariable String city) {
         return baseFeeService.getOneByCity(city);
     }
 
+    /**
+     *
+     * @param fieldsToUpdate
+     * @param city
+     * @return
+     */
     @PatchMapping("/{city}")
-    public ResponseEntity<?> updateBaseFee(@RequestBody RegionalBaseFee fieldsToUpdate, @PathVariable String city) {
+    public ResponseEntity<?> updateBaseFee(@RequestBody Map<String, Object> fieldsToUpdate, @PathVariable String city) {
         return baseFeeService.updateBaseFee(fieldsToUpdate, city);
     }
 

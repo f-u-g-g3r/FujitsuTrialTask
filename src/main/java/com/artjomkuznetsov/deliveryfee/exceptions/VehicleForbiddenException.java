@@ -1,4 +1,4 @@
-package com.artjomkuznetsov.deliveryfee.controllers.exceptions.vehicleForbidden;
+package com.artjomkuznetsov.deliveryfee.exceptions;
 
 public class VehicleForbiddenException extends RuntimeException {
     public VehicleForbiddenException() {

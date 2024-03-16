@@ -1,4 +1,4 @@
-package com.artjomkuznetsov.deliveryfee.controllers.exceptions.regionalBaseFeeNotFound;
+package com.artjomkuznetsov.deliveryfee.exceptions;
 
 public class RegionalBaseFeeNotFoundException extends RuntimeException {
     public RegionalBaseFeeNotFoundException(String city) {

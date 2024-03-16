@@ -1,12 +1,12 @@
 package com.artjomkuznetsov.deliveryfee.services;
 
 
+import com.artjomkuznetsov.deliveryfee.utils.Patcher;
 import com.artjomkuznetsov.deliveryfee.assemblers.RegionalBaseFeeModelAssembler;
 import com.artjomkuznetsov.deliveryfee.controllers.BaseFeeController;
-import com.artjomkuznetsov.deliveryfee.controllers.exceptions.regionalBaseFeeNotFound.RegionalBaseFeeNotFoundException;
+import com.artjomkuznetsov.deliveryfee.exceptions.RegionalBaseFeeNotFoundException;
 import com.artjomkuznetsov.deliveryfee.models.RegionalBaseFee;
 import com.artjomkuznetsov.deliveryfee.repositories.RegionalBaseFeeRepository;
-import org.apache.coyote.BadRequestException;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -30,6 +30,10 @@ public class BaseFeeService {
         this.assembler = assembler;
     }
 
+    /**
+     *
+     * @return
+     */
     public CollectionModel<EntityModel<RegionalBaseFee>> getAllBaseFees() {
         List<EntityModel<RegionalBaseFee>> baseFees = repository.findAll().stream()
                 .map(baseFee -> EntityModel.of(baseFee,
@@ -40,6 +44,11 @@ public class BaseFeeService {
         return CollectionModel.of(baseFees, linkTo(methodOn(BaseFeeController.class).all()).withSelfRel());
     }
 
+    /**
+     *
+     * @param city
+     * @return
+     */
     public EntityModel<RegionalBaseFee> getOneByCity(String city) {
         RegionalBaseFee baseFee = repository.findByCity(city)
                 .orElseThrow(() -> new RegionalBaseFeeNotFoundException(city));
@@ -49,15 +58,17 @@ public class BaseFeeService {
                 linkTo(methodOn(BaseFeeController.class).all()).withRel("regionalBaseFees"));
     }
 
-    public ResponseEntity<?> updateBaseFee(RegionalBaseFee newData, String city) {
+    /**
+     *
+     * @param fields
+     * @param city
+     * @return
+     */
+    public ResponseEntity<?> updateBaseFee(Map<String, Object> fields, String city) {
         RegionalBaseFee updatedBaseFee = repository.findByCity(city)
-                .map((baseFee -> {
-                    if (newData.getCarFee() != 0) baseFee.setCarFee(newData.getCarFee());
-                    if (newData.getBikeFee() != 0) baseFee.setBikeFee(newData.getBikeFee());
-                    if (newData.getScooterFee() != 0) baseFee.setScooterFee(newData.getScooterFee());
-                    return repository.save(baseFee);
-                }))
                 .orElseThrow(() -> new RegionalBaseFeeNotFoundException(city));
+
+        repository.save(Patcher.patch(updatedBaseFee, fields));
         EntityModel<RegionalBaseFee> entityModel = assembler.toModel(updatedBaseFee);
         return ResponseEntity
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())

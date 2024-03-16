@@ -1,7 +1,7 @@
 package com.artjomkuznetsov.deliveryfee.controllers;
 
 
-import com.artjomkuznetsov.deliveryfee.controllers.exceptions.VehicleForbiddenException;
+import com.artjomkuznetsov.deliveryfee.controllers.exceptions.vehicleForbidden.VehicleForbiddenException;
 import com.artjomkuznetsov.deliveryfee.controllers.responses.FeeResponse;
 import com.artjomkuznetsov.deliveryfee.services.CalculationService;
 import org.apache.coyote.BadRequestException;
@@ -35,10 +35,10 @@ public class FeeController {
      * @throws VehicleForbiddenException Throws if weather conditions are forbidden for the specified transport.
      */
     @GetMapping
-    public EntityModel<FeeResponse> getFee(@RequestParam Optional<String> city, @RequestParam Optional<String> vehicle)
+    public EntityModel<FeeResponse> getFee(@RequestParam Optional<String> city,
+                                           @RequestParam Optional<String> vehicle)
             throws BadRequestException, VehicleForbiddenException {
         FeeResponse feeResponse = new FeeResponse(calculationService.calculateFee(city, vehicle));
-
         return EntityModel.of(feeResponse, linkTo(methodOn(FeeController.class).getFee(city, vehicle)).withSelfRel());
     }
 }

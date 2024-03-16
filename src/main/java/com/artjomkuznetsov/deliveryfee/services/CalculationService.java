@@ -1,6 +1,7 @@
 package com.artjomkuznetsov.deliveryfee.services;
 
-import com.artjomkuznetsov.deliveryfee.controllers.exceptions.VehicleForbiddenException;
+import com.artjomkuznetsov.deliveryfee.controllers.exceptions.regionalBaseFeeNotFound.RegionalBaseFeeNotFoundException;
+import com.artjomkuznetsov.deliveryfee.controllers.exceptions.vehicleForbidden.VehicleForbiddenException;
 import com.artjomkuznetsov.deliveryfee.models.RegionalBaseFee;
 import com.artjomkuznetsov.deliveryfee.models.WeatherData;
 import com.artjomkuznetsov.deliveryfee.models.extra_weather_fee.AirTemperatureConditions;
@@ -8,7 +9,6 @@ import com.artjomkuznetsov.deliveryfee.models.extra_weather_fee.WeatherPhenomeno
 import com.artjomkuznetsov.deliveryfee.models.extra_weather_fee.WindSpeedConditions;
 import com.artjomkuznetsov.deliveryfee.repositories.*;
 import org.apache.coyote.BadRequestException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -75,7 +75,8 @@ public class CalculationService {
      * @return Regional base fee.
      */
     public float calculateRegionalBaseFee(String city, String vehicle) {
-        RegionalBaseFee RBF = baseFeeRepository.findByCity(city);
+        RegionalBaseFee RBF = baseFeeRepository.findByCity(city)
+                .orElseThrow(() -> new RegionalBaseFeeNotFoundException(city));
 
         return switch (vehicle) {
             case "car" -> RBF.getCarFee();

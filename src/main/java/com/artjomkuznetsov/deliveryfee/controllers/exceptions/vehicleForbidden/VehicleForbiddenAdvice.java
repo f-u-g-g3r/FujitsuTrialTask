@@ -1,5 +1,6 @@
-package com.artjomkuznetsov.deliveryfee.controllers.exceptions;
+package com.artjomkuznetsov.deliveryfee.controllers.exceptions.vehicleForbidden;
 
+import com.artjomkuznetsov.deliveryfee.controllers.exceptions.ErrorResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

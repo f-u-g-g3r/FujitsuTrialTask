@@ -44,6 +44,15 @@ public class DatabaseInitializer {
                             "(vehicle_types, snow_or_sleet_fee, rain_fee, forbidden_phenomenons) VALUES " +
                             "('scooter, bike', 1.0, 0.5, 'Glaze, Hail, Thunder, Thunderstorm')");
 
+            Statement testInsertWeatherData = connection.createStatement();
+            testInsertWeatherData.execute(
+                    "INSERT INTO weather_data " +
+                            "(station, stationwmo, air_temperature, wind_speed, weather_phenomenon, observation_timestamp) VALUES " +
+                            "('Tallinn-Harku', '26038', -11, 5, 'Thunder', 1710681299L), " +
+                            "('Tartu-Tõravere', '26242', -1, 6, '', 1710681299L), " +
+                            "('Pärnu', '41803', -3, 4, '', 1710681299L)"
+            );
+
         } catch (SQLException e) {
             System.out.println("An error occurred while connecting to the database.");
         }

@@ -6,11 +6,16 @@ import com.artjomkuznetsov.deliveryfee.controllers.responses.FeeResponse;
 import com.artjomkuznetsov.deliveryfee.services.CalculationService;
 import org.apache.coyote.BadRequestException;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -36,9 +41,10 @@ public class FeeController {
      */
     @GetMapping
     public EntityModel<FeeResponse> getFee(@RequestParam Optional<String> city,
-                                           @RequestParam Optional<String> vehicle)
+                                           @RequestParam Optional<String> vehicle,
+                                           @RequestParam(required = false) Optional<LocalDateTime> dateTime)
             throws BadRequestException, VehicleForbiddenException {
-        FeeResponse feeResponse = new FeeResponse(calculationService.calculateFee(city, vehicle));
-        return EntityModel.of(feeResponse, linkTo(methodOn(FeeController.class).getFee(city, vehicle)).withSelfRel());
+
+        return calculationService.calculateFee(city, vehicle, dateTime);
     }
 }

@@ -15,7 +15,7 @@ public class BadRequestAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(BadRequestException.class)
     protected ResponseEntity<Object> badRequestHandler(BadRequestException exception, WebRequest request) {
-        ErrorResponse errorResponse = new ErrorResponse("Invalid request. Make sure you specified the city and transport parameters properly.");
+        ErrorResponse errorResponse = new ErrorResponse(exception.getMessage());
         return handleExceptionInternal(exception, errorResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 }

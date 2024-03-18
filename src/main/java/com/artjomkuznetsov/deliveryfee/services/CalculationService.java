@@ -199,7 +199,7 @@ public class CalculationService {
         float extraFee = 0;
         if (weatherData != null && airConditions != null && windConditions != null && phenomenonConditions != null) {
             if (airConditions.getVehicleTypes().contains(vehicle)) {
-                float airExtraFee = calculateAirExtraFee(airConditions, weatherData.getAirTemperature());
+                float airExtraFee = calculateTemperatureExtraFee(airConditions, weatherData.getAirTemperature());
                 extraFee += airExtraFee;
             }
 
@@ -225,7 +225,7 @@ public class CalculationService {
         return 0;
     }
 
-    private float calculateAirExtraFee(AirTemperatureConditions airConditions, float airTemp) {
+    private float calculateTemperatureExtraFee(AirTemperatureConditions airConditions, float airTemp) {
         float extraFeeForAir = 0;
         if (airConditions.getLessThan() >= airTemp) {
             extraFeeForAir = airConditions.getLessThanFee();

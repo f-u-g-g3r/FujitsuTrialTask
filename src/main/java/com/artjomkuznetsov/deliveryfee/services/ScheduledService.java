@@ -68,9 +68,15 @@ public class ScheduledService {
                             WeatherData weatherData = new WeatherData();
                             weatherData.setStation(stationName);
                             weatherData.setStationWMO(element.getElementsByTagName("wmocode").item(0).getTextContent());
-                            weatherData.setAirTemperature(Float.parseFloat(element.getElementsByTagName("airtemperature").item(0).getTextContent()));
+                            String airTemp = element.getElementsByTagName("airtemperature").item(0).getTextContent();
+                            if (!airTemp.isEmpty()) {
+                                weatherData.setAirTemperature(Float.parseFloat(airTemp));
+                            }
+                            String windSpeed = element.getElementsByTagName("windspeed").item(0).getTextContent();
+                            if (!windSpeed.isEmpty()) {
+                                weatherData.setWindSpeed(Float.parseFloat(windSpeed));
+                            }
                             weatherData.setWeatherPhenomenon(element.getElementsByTagName("phenomenon").item(0).getTextContent());
-                            weatherData.setWindSpeed(Float.parseFloat(element.getElementsByTagName("windspeed").item(0).getTextContent()));
                             weatherData.setObservationTimestamp(timestamp);
                             weatherDataRepository.save(weatherData);
                         }

@@ -33,8 +33,10 @@ public class FeeController {
 
     /**
      *
-     * @param city Parameter from request - the city for which you need to check the weather.
-     * @param vehicle Parameter from request - transport for which you need to calculate the fee.
+     * @param city Query parameter - the city for which you need to check the weather.
+     * @param vehicle Query parameter - transport for which you need to calculate the fee.
+     * @param dateTime Optional query parameter - if present, specifies the date and time for which weather data should be obtained,
+     *                otherwise the latest weather data is taken.
      * @return EntityModel with calculated fee based on specified parameters or the error message.
      * @throws BadRequestException Throws if parameters were specified improperly.
      * @throws VehicleForbiddenException Throws if weather conditions are forbidden for the specified transport.

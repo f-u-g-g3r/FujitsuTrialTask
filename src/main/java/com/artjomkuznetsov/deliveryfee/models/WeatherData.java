@@ -1,19 +1,22 @@
 package com.artjomkuznetsov.deliveryfee.models;
 
 import jakarta.persistence.*;
-
-import java.time.LocalDateTime;
+import jakarta.validation.constraints.NotNull;
 
 
 @Table(name = "weather_data")
 @Entity
 public class WeatherData {
+    @NotNull
     private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
+    @NotNull
     private String station;
+    @NotNull
     private String stationWMO;
     private float airTemperature;
     private float windSpeed;
     private String weatherPhenomenon;
+    @NotNull
     private Long observationTimestamp;
 
     public WeatherData() {

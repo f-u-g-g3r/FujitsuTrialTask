@@ -3,6 +3,7 @@ package com.artjomkuznetsov.deliveryfee.models.extra_weather_fee;
 import com.artjomkuznetsov.deliveryfee.utils.StringListConverter;
 import com.artjomkuznetsov.deliveryfee.models.ExtraWeatherFee;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,8 @@ import java.util.List;
 @Entity
 @Table(name = "wind_speed_conditions")
 public class WindSpeedConditions extends ExtraWeatherFee {
-    private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
+    @NotNull
+    private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) int id;
 
     @Convert(converter = StringListConverter.class)
     @Column(name = "vehicle_types")
@@ -31,11 +33,11 @@ public class WindSpeedConditions extends ExtraWeatherFee {
         this.forbiddenSpeed = forbiddenSpeed;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

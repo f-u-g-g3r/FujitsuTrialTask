@@ -1,14 +1,24 @@
 package com.artjomkuznetsov.deliveryfee.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "regional_base_fee")
 public class RegionalBaseFee {
+    @NotNull
     private @GeneratedValue(strategy = GenerationType.IDENTITY) @Id Long id;
+
+    @NotNull
     private String city;
+
+    @NotNull
     private float carFee;
+
+    @NotNull
     private float bikeFee;
+
+    @NotNull
     private float scooterFee;
 
     public RegionalBaseFee() {}

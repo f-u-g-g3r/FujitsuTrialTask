@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface WindSpeedConditionsRepository extends JpaRepository<WindSpeedConditions, Long> {
+public interface WindSpeedConditionsRepository extends JpaRepository<WindSpeedConditions, Integer> {
     Optional<WindSpeedConditions> findFirstBy();
 }

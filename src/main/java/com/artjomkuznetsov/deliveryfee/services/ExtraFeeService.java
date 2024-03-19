@@ -29,19 +29,18 @@ public class ExtraFeeService {
     private final WindSpeedConditionsRepository windRepository;
     private final WeatherPhenomenonConditionsRepository phenomenonRepository;
     private final ExtraFeeModelAssembler assembler;
-    private final Patcher patcher;
 
-    public ExtraFeeService(AirTemperatureConditionsRepository airRepository, WindSpeedConditionsRepository windRepository, WeatherPhenomenonConditionsRepository phenomenonRepository, ExtraFeeModelAssembler assembler, Patcher patcher) {
+    public ExtraFeeService(AirTemperatureConditionsRepository airRepository, WindSpeedConditionsRepository windRepository, WeatherPhenomenonConditionsRepository phenomenonRepository, ExtraFeeModelAssembler assembler) {
         this.airRepository = airRepository;
         this.windRepository = windRepository;
         this.phenomenonRepository = phenomenonRepository;
         this.assembler = assembler;
-        this.patcher = patcher;
     }
 
     /**
+     * Retrieves all available extra weather conditions and their associated fees.
      *
-     * @return
+     * @return A CollectionModel containing EntityModel instances of all available extra weather conditions and their fees.
      */
     public CollectionModel<EntityModel<? extends ExtraWeatherFee>> all() {
         EntityModel<AirTemperatureConditions> airConditions = assembler.toModel(airRepository.findFirstBy()
@@ -57,8 +56,10 @@ public class ExtraFeeService {
     }
 
     /**
+     * Retrieves the entity model representing the air temperature conditions.
      *
-     * @return
+     * @return An EntityModel containing the air temperature conditions.
+     * @throws ExtraWeatherConditionsNotFoundException if the air temperature conditions are not found.
      */
     public EntityModel<AirTemperatureConditions> getAirConditions() {
         return assembler.toModel(airRepository.findFirstBy()
@@ -66,8 +67,10 @@ public class ExtraFeeService {
     }
 
     /**
+     * Retrieves the entity model representing the wind speed conditions.
      *
-     * @return
+     * @return An EntityModel containing the wind speed conditions.
+     * @throws ExtraWeatherConditionsNotFoundException if the wind speed conditions are not found.
      */
     public EntityModel<WindSpeedConditions> getWindConditions() {
         return assembler.toModel(windRepository.findFirstBy()
@@ -75,8 +78,10 @@ public class ExtraFeeService {
     }
 
     /**
+     * Retrieves the entity model representing the weather phenomenon conditions.
      *
-     * @return
+     * @return An EntityModel containing the weather phenomenon conditions.
+     * @throws ExtraWeatherConditionsNotFoundException if the weather phenomenon conditions are not found.
      */
     public EntityModel<WeatherPhenomenonConditions> getPhenomenonConditions() {
         return assembler.toModel(phenomenonRepository.findFirstBy()
@@ -84,24 +89,28 @@ public class ExtraFeeService {
     }
 
     /**
+     * Updates the air temperature conditions with the provided fields.
      *
-     * @param fields
-     * @return
+     * @param fields A Map containing the fields to update and their new values.
+     * @return A ResponseEntity indicating the success of the update operation and containing the updated air temperature conditions as an EntityModel.
+     * @throws ExtraWeatherConditionsNotFoundException if the air temperature conditions are not found.
      */
-    public ResponseEntity<?> updateAirConditions(Map<String, Object> fields) {
-        AirTemperatureConditions updatedAir = airRepository.findFirstBy()
+    public ResponseEntity<?> updateAirTemperatureConditions(Map<String, Object> fields) {
+        AirTemperatureConditions updatedTemperature = airRepository.findFirstBy()
                 .orElseThrow(ExtraWeatherConditionsNotFoundException::new);
 
-        airRepository.save(Patcher.patch(updatedAir, fields));
+        airRepository.save(Patcher.patch(updatedTemperature, fields));
 
-        EntityModel<AirTemperatureConditions> entityModel = assembler.toModel(updatedAir);
+        EntityModel<AirTemperatureConditions> entityModel = assembler.toModel(updatedTemperature);
         return ResponseEntity.status(HttpStatus.OK).body(entityModel);
     }
 
     /**
+     * Updates the wind speed conditions with the provided fields.
      *
-     * @param fields
-     * @return
+     * @param fields A Map containing the fields to update and their new values.
+     * @return A ResponseEntity indicating the success of the update operation and containing the updated wind speed conditions as an EntityModel.
+     * @throws ExtraWeatherConditionsNotFoundException if the wind speed conditions are not found.
      */
     public ResponseEntity<?> updateWindConditions(Map<String, Object> fields) {
         WindSpeedConditions updatedWind = windRepository.findFirstBy()
@@ -114,9 +123,11 @@ public class ExtraFeeService {
     }
 
     /**
+     * Updates the weather phenomenon conditions with the provided fields.
      *
-     * @param fields
-     * @return
+     * @param fields A Map containing the fields to update and their new values.
+     * @return A ResponseEntity indicating the success of the update operation and containing the updated weather phenomenon conditions as an EntityModel.
+     * @throws ExtraWeatherConditionsNotFoundException if the weather phenomenon conditions are not found.
      */
     public ResponseEntity<?> updatePhenomenonConditions(Map<String, Object> fields) {
         WeatherPhenomenonConditions updatedPhenomenon = phenomenonRepository.findFirstBy()

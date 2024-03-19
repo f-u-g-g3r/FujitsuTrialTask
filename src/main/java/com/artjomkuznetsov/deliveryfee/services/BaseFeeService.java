@@ -31,8 +31,9 @@ public class BaseFeeService {
     }
 
     /**
-     *
-     * @return
+     * Retrieves all RegionalBaseFee entities from the JPA repository with links to the corresponding operations.
+     * This method assumes that the repository will not return null.
+     * @return A CollectionModel containing EntityModel instances of all RegionalBaseFee entities.
      */
     public CollectionModel<EntityModel<RegionalBaseFee>> getAllBaseFees() {
         List<EntityModel<RegionalBaseFee>> baseFees = repository.findAll().stream()
@@ -45,9 +46,11 @@ public class BaseFeeService {
     }
 
     /**
-     *
-     * @param city
-     * @return
+     * Retrieves a RegionalBaseFee entity for the specified city from the JPA repository with links to the corresponding operations.
+     * If no RegionalBaseFee is found for the specified city, a RegionalBaseFeeNotFoundException is thrown.
+     * @param city  The name of the city for which to retrieve the RegionalBaseFee.
+     * @return An EntityModel representing the RegionalBaseFee entity for the specified city.
+     * @throws RegionalBaseFeeNotFoundException if no RegionalBaseFee is found for the specified city.
      */
     public EntityModel<RegionalBaseFee> getOneByCity(String city) {
         RegionalBaseFee baseFee = repository.findByCity(city)
@@ -59,10 +62,13 @@ public class BaseFeeService {
     }
 
     /**
+     * Updates the RegionalBaseFee for the specified city with the provided fields.
+     * If no RegionalBaseFee is found for the specified city, a RegionalBaseFeeNotFoundException is thrown.
      *
-     * @param fields
-     * @param city
-     * @return
+     * @param fields A Map containing the fields to update and their new values.
+     * @param city The name of the city for which to update the RegionalBaseFee.
+     * @return A ResponseEntity containing the updated RegionalBaseFee as an EntityModel, with a link to the updated resource.
+     * @throws RegionalBaseFeeNotFoundException if no RegionalBaseFee is found for the specified city.
      */
     public ResponseEntity<?> updateBaseFee(Map<String, Object> fields, String city) {
         RegionalBaseFee updatedBaseFee = repository.findByCity(city)
@@ -73,6 +79,5 @@ public class BaseFeeService {
         return ResponseEntity
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
                 .body(entityModel);
-
     }
 }

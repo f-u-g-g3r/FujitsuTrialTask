@@ -61,12 +61,13 @@ public class CalculationService {
     }
 
     /**
+     * Calculates the fee for a given city, vehicle type, and optional date and time.
      *
-     * @param city
-     * @param vehicle
-     * @param dateTime
-     * @return
-     * @throws BadRequestException
+     * @param city (Optional) The name of the city for which to calculate the fee.
+     * @param vehicle (Optional) The type of vehicle for which to calculate the fee.
+     * @param dateTime (Optional) The date and time for which to calculate the fee.
+     * @return An EntityModel containing the calculated fee response, with a self-referencing link.
+     * @throws BadRequestException if the provided parameters are invalid or if the calculation fails.
      */
     public EntityModel<FeeResponse> calculateFee(Optional<String> city, Optional<String> vehicle, Optional<LocalDateTime> dateTime)
             throws BadRequestException {
@@ -88,23 +89,28 @@ public class CalculationService {
     }
 
     /**
+     * Calculates the total fee based on the optional parameters for city and vehicle.
      *
-     * @param optCity
-     * @param optVehicle
-     * @return
-     * @throws BadRequestException
+     * @param city An optional parameter representing the city for which the fee is calculated.
+     * @param vehicle An optional parameter representing the vehicle type for which the fee is calculated.
+     * @return The calculated total fee.
+     * @throws BadRequestException if there is a problem with the request parameters.
      */
-    public float calculateTotalFee(Optional<String> optCity, Optional<String> optVehicle)
+    public float calculateTotalFee(Optional<String> city, Optional<String> vehicle)
             throws BadRequestException {
-        return calculateTotalFee(optCity, optVehicle, Optional.empty());
+        return calculateTotalFee(city, vehicle, Optional.empty());
     }
 
     /**
-     * Calculates total fee based on the city, vehicle and current weather data.
+     * Calculates the total fee based on the optional parameters for city, vehicle, and date/time.
      *
-     * @param optCity    The city for which calculations will be made.
-     * @param optVehicle vehicle for which calculations will be made.
-     * @return Total fee or -1 if the use of the specified vehicle is forbidden due to the current weather.
+     * @param optCity An optional parameter representing the city for which the fee is calculated.
+     * @param optVehicle An optional parameter representing the vehicle type for which the fee is calculated.
+     * @param dateTime An optional parameter representing the date and time for which weather data will be taken.
+     *                 If dateTime is empty, the latest weather data will be taken.
+     * @return The calculated total fee.
+     * @throws BadRequestException if there is a problem with the request parameters, such as missing or invalid data.
+     * @throws VehicleForbiddenException if the specified vehicle is not allowed according to the weather data.
      */
     public float calculateTotalFee(Optional<String> optCity, Optional<String> optVehicle, Optional<LocalDateTime> dateTime)
             throws BadRequestException, VehicleForbiddenException {
@@ -134,13 +140,6 @@ public class CalculationService {
         throw new BadRequestException("Invalid request. Make sure you specified the city and transport parameters properly.");
     }
 
-    /**
-     *
-     * @param station
-     * @param dateTime
-     * @return
-     * @throws BadRequestException
-     */
     private WeatherData getWeatherDataByLocalDateTime(String station, LocalDateTime dateTime) throws BadRequestException {
         if (dateTime.getMinute() >= 15) {
             dateTime = dateTime.minusMinutes(dateTime.getMinute() - 15)
@@ -164,13 +163,6 @@ public class CalculationService {
         }
     }
 
-    /**
-     * Calculates fee only for regional rules, based on the city and vehicle.
-     *
-     * @param city    The city for which calculations will be made.
-     * @param vehicle vehicle for which calculations will be made.
-     * @return Regional base fee.
-     */
     public float calculateRegionalBaseFee(String city, String vehicle) {
         RegionalBaseFee RBF = baseFeeRepository.findByCity(city)
                 .orElseThrow(() -> new RegionalBaseFeeNotFoundException(city));
@@ -183,12 +175,6 @@ public class CalculationService {
         };
     }
 
-    /**
-     * Calculates fee based on the specified city, vehicle and weather conditions.
-     *
-     * @param vehicle vehicle for which conditions will be checked.
-     * @return Extra fee for weather conditions.
-     */
     public float calculateExtraFee(String vehicle, WeatherData weatherData) {
         AirTemperatureConditions airConditions = airTemperatureRepository.findFirstBy()
                 .orElseThrow(ExtraWeatherConditionsNotFoundException::new);
@@ -235,9 +221,6 @@ public class CalculationService {
         return extraFeeForAir;
     }
 
-    /**
-     * If returns -1, it means that specified vehicle cannot be used
-     */
     private float calculateWindExtraFee(WindSpeedConditions windConditions, float windSpeed) {
         float extraFeeForWind = 0;
         if (windSpeed > windConditions.getBetweenMin() && windSpeed < windConditions.getBetweenMax()) {

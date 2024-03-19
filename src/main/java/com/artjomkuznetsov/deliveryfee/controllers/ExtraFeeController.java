@@ -64,7 +64,7 @@ public class ExtraFeeController {
      */
     @PatchMapping("/air")
     public ResponseEntity<?> updateAirConditions(@RequestBody Map<String, Object> fieldsToUpdate) {
-        return service.updateAirConditions(fieldsToUpdate);
+        return service.updateAirTemperatureConditions(fieldsToUpdate);
     }
 
     /**

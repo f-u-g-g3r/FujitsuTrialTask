@@ -38,8 +38,8 @@ public class ScheduledService {
     }
 
     /**
-     * This method retrieves weather data from the Estonian weather API, parses XML responses,
-     * and saves relevant observations to the database.
+     * This method retrieves weather data from the <a href="https://www.ilmateenistus.ee/ilma_andmed/xml/observations.php">Estonian weather API</a>,
+     * parses XML responses, and saves relevant observations to the database.
      * It's scheduled to run periodically using the @Scheduled annotation with a specified cron expression.
      */
     @Scheduled(cron = "*/3 * * * * *")//@Scheduled(cron = "0 15 * * * *")

@@ -111,6 +111,8 @@ public class CalculationService {
      * @return The calculated total fee.
      * @throws BadRequestException if there is a problem with the request parameters, such as missing or invalid data.
      * @throws VehicleForbiddenException if the specified vehicle is not allowed according to the weather data.
+     * @throws ExtraWeatherConditionsNotFoundException if one of weather conditions are not found.
+     * @throws RegionalBaseFeeNotFoundException if no RegionalBaseFee is found for the specified city.
      */
     public float calculateTotalFee(Optional<String> optCity, Optional<String> optVehicle, Optional<LocalDateTime> dateTime)
             throws BadRequestException, VehicleForbiddenException {

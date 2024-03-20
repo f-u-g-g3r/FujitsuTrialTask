@@ -15,6 +15,6 @@ public class RegionalBaseFeeNotFoundAdvice extends ResponseEntityExceptionHandle
     @ExceptionHandler(RegionalBaseFeeNotFoundException.class)
     public ResponseEntity<Object> baseFeeNotFoundHandler(RegionalBaseFeeNotFoundException exception, WebRequest request) {
         ErrorResponse errorResponse = new ErrorResponse(exception.getMessage());
-        return handleExceptionInternal(exception, errorResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+        return handleExceptionInternal(exception, errorResponse, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 }

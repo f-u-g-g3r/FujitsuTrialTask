@@ -47,8 +47,7 @@ public class BaseFeeService {
 
     /**
      * Retrieves a RegionalBaseFee entity for the specified city from the JPA repository with links to the corresponding operations.
-     * If no RegionalBaseFee is found for the specified city, a RegionalBaseFeeNotFoundException is thrown.
-     * @param city  The name of the city for which to retrieve the RegionalBaseFee.
+     * @param city The name of the city for which to retrieve the RegionalBaseFee.
      * @return An EntityModel representing the RegionalBaseFee entity for the specified city.
      * @throws RegionalBaseFeeNotFoundException if no RegionalBaseFee is found for the specified city.
      */
@@ -67,17 +66,14 @@ public class BaseFeeService {
      *
      * @param fields A Map containing the fields to update and their new values.
      * @param city The name of the city for which to update the RegionalBaseFee.
-     * @return A ResponseEntity containing the updated RegionalBaseFee as an EntityModel, with a link to the updated resource.
+     * @return EntityModel containing the updated RegionalBaseFee with links to the corresponding operations.
      * @throws RegionalBaseFeeNotFoundException if no RegionalBaseFee is found for the specified city.
      */
-    public ResponseEntity<?> updateBaseFee(Map<String, Object> fields, String city) {
+    public EntityModel<RegionalBaseFee> updateBaseFee(Map<String, Object> fields, String city) {
         RegionalBaseFee updatedBaseFee = repository.findByCity(city)
                 .orElseThrow(() -> new RegionalBaseFeeNotFoundException(city));
 
         repository.save(Patcher.patch(updatedBaseFee, fields));
-        EntityModel<RegionalBaseFee> entityModel = assembler.toModel(updatedBaseFee);
-        return ResponseEntity
-                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-                .body(entityModel);
+        return assembler.toModel(updatedBaseFee);
     }
 }

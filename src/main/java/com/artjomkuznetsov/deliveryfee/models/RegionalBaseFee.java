@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 @Table(name = "regional_base_fee")
 public class RegionalBaseFee {
     @NotNull
-    private @GeneratedValue(strategy = GenerationType.IDENTITY) @Id Long id;
+    private @GeneratedValue(strategy = GenerationType.IDENTITY) @Id int id;
 
     @NotNull
     private String city;
@@ -30,11 +30,11 @@ public class RegionalBaseFee {
         this.bikeFee = bikeFee;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

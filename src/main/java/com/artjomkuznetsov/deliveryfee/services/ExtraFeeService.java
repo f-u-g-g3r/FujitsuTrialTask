@@ -39,8 +39,7 @@ public class ExtraFeeService {
 
     /**
      * Retrieves all available extra weather conditions and their associated fees.
-     *
-     * @return A CollectionModel containing EntityModel instances of all available extra weather conditions and their fees.
+     * @return A CollectionModel containing EntityModel instances of all available extra weather conditions and their fees with links to the corresponding operations.
      */
     public CollectionModel<EntityModel<? extends ExtraWeatherFee>> all() {
         EntityModel<AirTemperatureConditions> airConditions = assembler.toModel(airRepository.findFirstBy()
@@ -57,8 +56,7 @@ public class ExtraFeeService {
 
     /**
      * Retrieves the entity model representing the air temperature conditions.
-     *
-     * @return An EntityModel containing the air temperature conditions.
+     * @return An EntityModel containing the air temperature conditions with links to the corresponding operations.
      * @throws ExtraWeatherConditionsNotFoundException if the air temperature conditions are not found.
      */
     public EntityModel<AirTemperatureConditions> getAirConditions() {
@@ -68,8 +66,7 @@ public class ExtraFeeService {
 
     /**
      * Retrieves the entity model representing the wind speed conditions.
-     *
-     * @return An EntityModel containing the wind speed conditions.
+     * @return An EntityModel containing the wind speed conditions with links to the corresponding operations.
      * @throws ExtraWeatherConditionsNotFoundException if the wind speed conditions are not found.
      */
     public EntityModel<WindSpeedConditions> getWindConditions() {
@@ -79,8 +76,7 @@ public class ExtraFeeService {
 
     /**
      * Retrieves the entity model representing the weather phenomenon conditions.
-     *
-     * @return An EntityModel containing the weather phenomenon conditions.
+     * @return An EntityModel containing the weather phenomenon conditions with links to the corresponding operations.
      * @throws ExtraWeatherConditionsNotFoundException if the weather phenomenon conditions are not found.
      */
     public EntityModel<WeatherPhenomenonConditions> getPhenomenonConditions() {
@@ -90,26 +86,23 @@ public class ExtraFeeService {
 
     /**
      * Updates the air temperature conditions with the provided fields.
-     *
      * @param fields A Map containing the fields to update and their new values.
-     * @return A ResponseEntity indicating the success of the update operation and containing the updated air temperature conditions as an EntityModel.
+     * @return EntityModel indicating the success of the update operation and containing the updated air temperature conditions with links to the corresponding operations.
      * @throws ExtraWeatherConditionsNotFoundException if the air temperature conditions are not found.
      */
-    public ResponseEntity<?> updateAirTemperatureConditions(Map<String, Object> fields) {
+    public EntityModel<AirTemperatureConditions> updateAirTemperatureConditions(Map<String, Object> fields) {
         AirTemperatureConditions updatedTemperature = airRepository.findFirstBy()
                 .orElseThrow(ExtraWeatherConditionsNotFoundException::new);
 
         airRepository.save(Patcher.patch(updatedTemperature, fields));
 
-        EntityModel<AirTemperatureConditions> entityModel = assembler.toModel(updatedTemperature);
-        return ResponseEntity.status(HttpStatus.OK).body(entityModel);
+        return assembler.toModel(updatedTemperature);
     }
 
     /**
      * Updates the wind speed conditions with the provided fields.
-     *
      * @param fields A Map containing the fields to update and their new values.
-     * @return A ResponseEntity indicating the success of the update operation and containing the updated wind speed conditions as an EntityModel.
+     * @return EntityModel indicating the success of the update operation and containing the updated wind speed conditions with links to the corresponding operations.
      * @throws ExtraWeatherConditionsNotFoundException if the wind speed conditions are not found.
      */
     public ResponseEntity<?> updateWindConditions(Map<String, Object> fields) {
@@ -124,9 +117,8 @@ public class ExtraFeeService {
 
     /**
      * Updates the weather phenomenon conditions with the provided fields.
-     *
      * @param fields A Map containing the fields to update and their new values.
-     * @return A ResponseEntity indicating the success of the update operation and containing the updated weather phenomenon conditions as an EntityModel.
+     * @return EntityModel indicating the success of the update operation and containing the updated weather phenomenon conditions with links to the corresponding operations.
      * @throws ExtraWeatherConditionsNotFoundException if the weather phenomenon conditions are not found.
      */
     public ResponseEntity<?> updatePhenomenonConditions(Map<String, Object> fields) {

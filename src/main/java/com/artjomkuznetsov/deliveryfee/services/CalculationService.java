@@ -11,7 +11,6 @@ import com.artjomkuznetsov.deliveryfee.models.extra_weather_fee.AirTemperatureCo
 import com.artjomkuznetsov.deliveryfee.models.extra_weather_fee.WeatherPhenomenonConditions;
 import com.artjomkuznetsov.deliveryfee.models.extra_weather_fee.WindSpeedConditions;
 import com.artjomkuznetsov.deliveryfee.repositories.*;
-import jakarta.annotation.Nullable;
 import org.apache.coyote.BadRequestException;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;

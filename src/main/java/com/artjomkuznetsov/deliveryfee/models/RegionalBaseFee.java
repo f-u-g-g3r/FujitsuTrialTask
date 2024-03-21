@@ -1,11 +1,16 @@
 package com.artjomkuznetsov.deliveryfee.models;
 
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
+
 @Entity
 @Table(name = "regional_base_fee")
+@Schema(description = "Pet model")
 public class RegionalBaseFee {
+    @Schema(description = "ID of the pet")
     @NotNull
     private @GeneratedValue(strategy = GenerationType.IDENTITY) @Id int id;
 

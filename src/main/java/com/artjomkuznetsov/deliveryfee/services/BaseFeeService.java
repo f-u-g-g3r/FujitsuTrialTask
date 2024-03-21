@@ -1,7 +1,7 @@
 package com.artjomkuznetsov.deliveryfee.services;
 
 
-import com.artjomkuznetsov.deliveryfee.utils.Patcher;
+import com.artjomkuznetsov.deliveryfee.utils.Updater;
 import com.artjomkuznetsov.deliveryfee.assemblers.RegionalBaseFeeModelAssembler;
 import com.artjomkuznetsov.deliveryfee.controllers.BaseFeeController;
 import com.artjomkuznetsov.deliveryfee.exceptions.RegionalBaseFeeNotFoundException;
@@ -9,8 +9,6 @@ import com.artjomkuznetsov.deliveryfee.models.RegionalBaseFee;
 import com.artjomkuznetsov.deliveryfee.repositories.RegionalBaseFeeRepository;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.IanaLinkRelations;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -73,7 +71,7 @@ public class BaseFeeService {
         RegionalBaseFee updatedBaseFee = repository.findByCity(city)
                 .orElseThrow(() -> new RegionalBaseFeeNotFoundException(city));
 
-        repository.save(Patcher.patch(updatedBaseFee, fields));
+        repository.save(Updater.updateEntity(updatedBaseFee, fields));
         return assembler.toModel(updatedBaseFee);
     }
 }

@@ -27,7 +27,7 @@ public class ExtraFeeController {
     }
 
     /**
-     * Retrieves all available extra weather conditions and their associated fees.
+     * Retrieve all available extra weather conditions and their associated fees.
      * @return A CollectionModel containing EntityModel instances of all available extra weather conditions and their fees with links to the corresponding operations.
      */
     @Tag(name = "extra-fee-controller-get")
@@ -114,12 +114,12 @@ public class ExtraFeeController {
     }
 
     /**
-     * Retrieves the entity model representing the air temperature conditions.
+     * Retrieve the entity model representing the air temperature conditions.
      * @return An EntityModel containing the air temperature conditions with links to the corresponding operations.
      * @throws ExtraWeatherConditionsNotFoundException if the air temperature conditions are not found.
      */
     @Tag(name = "extra-fee-controller-get")
-    @Operation(summary = "Retrieves the air temperature conditions.",
+    @Operation(summary = "Retrieve the air temperature conditions.",
             description = "The response is air temperature conditions with links to the corresponding operations.",
             responses = { @ApiResponse(responseCode = "200", description = "Ok.", content = {@Content(mediaType = "application/json",
                     schema = @Schema(example = """
@@ -152,12 +152,12 @@ public class ExtraFeeController {
     }
 
     /**
-     * Retrieves the entity model representing the wind speed conditions.
+     * Retrieve the entity model representing the wind speed conditions.
      * @return An EntityModel containing the wind speed conditions with links to the corresponding operations.
      * @throws ExtraWeatherConditionsNotFoundException if the wind speed conditions are not found.
      */
     @Tag(name = "extra-fee-controller-get")
-    @Operation(summary = "Retrieves the wind speed conditions.",
+    @Operation(summary = "Retrieve the wind speed conditions.",
             description = "The response is wind speed conditions with links to the corresponding operations.",
             responses = { @ApiResponse(responseCode = "200", description = "Ok.", content = {@Content(mediaType = "application/json",
                     schema = @Schema(example = """
@@ -189,12 +189,12 @@ public class ExtraFeeController {
     }
 
     /**
-     * Retrieves the entity model representing the weather phenomenon conditions.
+     * Retrieve the entity model representing the weather phenomenon conditions.
      * @return An EntityModel containing the weather phenomenon conditions with links to the corresponding operations.
      * @throws ExtraWeatherConditionsNotFoundException if the weather phenomenon conditions are not found.
      */
     @Tag(name = "extra-fee-controller-get")
-    @Operation(summary = "Retrieves the weather phenomenon conditions.",
+    @Operation(summary = "Retrieve the weather phenomenon conditions.",
             description = "The response is weather phenomenon conditions with links to the corresponding operations.",
             responses = { @ApiResponse(responseCode = "200", description = "Ok.", content = {@Content(mediaType = "application/json",
                     schema = @Schema(example = """
@@ -231,7 +231,7 @@ public class ExtraFeeController {
      * @return EntityModel indicating the success of the update operation and containing the updated air temperature conditions with links to the corresponding operations.
      * @throws ExtraWeatherConditionsNotFoundException if the air temperature conditions are not found.
      */
-    @Tag(name = "extra-fee-controller-patch")
+    @Tag(name = "extra-fee-controller-put")
     @Operation(summary = "Update air temperature conditions.",
             description = "Update the air temperature conditions by specifying the fields to update and their new values in the request body." +
                     " The response is air temperature conditions with links to the corresponding operations.",
@@ -260,7 +260,7 @@ public class ExtraFeeController {
                     @ApiResponse(responseCode = "500", content = @Content,
                             description = "Extra fees for air temperature conditions haven't been configured. The database may not be configured correctly.")
             })
-    @PatchMapping("/air")
+    @PutMapping("/air")
     public EntityModel<AirTemperatureConditions> updateAirConditions(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "Fields to update and their new values.",
             content = {@Content(schema = @Schema(example = """
@@ -285,7 +285,7 @@ public class ExtraFeeController {
      * @return EntityModel indicating the success of the update operation and containing the updated wind speed conditions with links to the corresponding operations.
      * @throws ExtraWeatherConditionsNotFoundException if the wind speed conditions are not found.
      */
-    @Tag(name = "extra-fee-controller-patch")
+    @Tag(name = "extra-fee-controller-put")
     @Operation(summary = "Update wind speed conditions.",
             description = "Update the wind speed conditions by specifying the fields to update and their new values in the request body." +
                     " The response is wind speed conditions with links to the corresponding operations.",
@@ -312,7 +312,7 @@ public class ExtraFeeController {
                     ))}), @ApiResponse(responseCode = "500", content = @Content,
                     description = "Extra fees for wind speed conditions haven't been configured. The database may not be configured correctly.")
             })
-    @PatchMapping("/wind")
+    @PutMapping("/wind")
     public ResponseEntity<?> updateWindConditions(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "Fields to update and their new values.",
             content = {@Content(schema = @Schema(example = """
@@ -336,7 +336,7 @@ public class ExtraFeeController {
      * @return EntityModel indicating the success of the update operation and containing the updated weather phenomenon conditions with links to the corresponding operations.
      * @throws ExtraWeatherConditionsNotFoundException if the weather phenomenon conditions are not found.
      */
-    @Tag(name = "extra-fee-controller-patch")
+    @Tag(name = "extra-fee-controller-put")
     @Operation(summary = "Update weather phenomenon conditions.",
             description = "Update the weather phenomenon conditions by specifying the fields to update and their new values in the request body." +
                     " The response is weather phenomenon conditions with links to the corresponding operations.",
@@ -364,7 +364,7 @@ public class ExtraFeeController {
                     ))}), @ApiResponse(responseCode = "500", content = @Content,
                     description = "Extra fees for weather phenomenon conditions haven't been configured. The database may not be configured correctly.")
             })
-    @PatchMapping("/phenomenon")
+    @PutMapping("/phenomenon")
     public ResponseEntity<?> updatePhenomenonConditions(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "Fields to update and their new values.",
             content = {@Content(schema = @Schema(example = """

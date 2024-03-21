@@ -79,7 +79,7 @@ public class BaseFeeController {
             description = "The response is one regional base fee with links to the corresponding operations.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Ok.", content = {@Content(mediaType = "application/json",
-                            schema = @Schema(example = """
+                             schema = @Schema(example = """
                                     {
                                         "id": 0,
                                         "city": "string",
@@ -94,7 +94,7 @@ public class BaseFeeController {
                                                 "href": "string"
                                             }
                                         }
-                                    }"""))}),
+                                    }"""))}, useReturnTypeSchema = true),
                     @ApiResponse(responseCode = "404", description = "Regional base fee for the specified city is not found.",
                             content = @Content)
             })
@@ -114,7 +114,7 @@ public class BaseFeeController {
      * @return EntityModel containing the updated RegionalBaseFee with links to the corresponding operations.
      * @throws RegionalBaseFeeNotFoundException if no RegionalBaseFee is found for the specified city.
      */
-    @Tag(name = "base-fee-controller-patch")
+    @Tag(name = "base-fee-controller-put")
     @Operation(summary = "Update regional base fee.",
             description = "Update the existing regional base fee for the specified city by " +
                     " specifying the fields to update and their new values in the request body." +
@@ -139,7 +139,7 @@ public class BaseFeeController {
                     @ApiResponse(responseCode = "404", description = "Regional base fee for the specified city is not found.",
                             content = @Content)
             })
-    @PatchMapping("/{city}")
+    @PutMapping("/{city}")
     public EntityModel<RegionalBaseFee> updateBaseFee(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "Fields to update and their new values.",
             content = {@Content(schema = @Schema(example = """

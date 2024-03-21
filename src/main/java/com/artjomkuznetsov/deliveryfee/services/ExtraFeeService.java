@@ -1,6 +1,6 @@
 package com.artjomkuznetsov.deliveryfee.services;
 
-import com.artjomkuznetsov.deliveryfee.utils.Patcher;
+import com.artjomkuznetsov.deliveryfee.utils.Updater;
 import com.artjomkuznetsov.deliveryfee.assemblers.ExtraFeeModelAssembler;
 import com.artjomkuznetsov.deliveryfee.controllers.ExtraFeeController;
 import com.artjomkuznetsov.deliveryfee.exceptions.ExtraWeatherConditionsNotFoundException;
@@ -94,7 +94,7 @@ public class ExtraFeeService {
         AirTemperatureConditions updatedTemperature = airRepository.findFirstBy()
                 .orElseThrow(ExtraWeatherConditionsNotFoundException::new);
 
-        airRepository.save(Patcher.patch(updatedTemperature, fields));
+        airRepository.save(Updater.updateEntity(updatedTemperature, fields));
 
         return assembler.toModel(updatedTemperature);
     }
@@ -109,7 +109,7 @@ public class ExtraFeeService {
         WindSpeedConditions updatedWind = windRepository.findFirstBy()
                 .orElseThrow(ExtraWeatherConditionsNotFoundException::new);
 
-        windRepository.save(Patcher.patch(updatedWind, fields));
+        windRepository.save(Updater.updateEntity(updatedWind, fields));
 
         EntityModel<WindSpeedConditions> entityModel = assembler.toModel(updatedWind);
         return ResponseEntity.status(HttpStatus.OK).body(entityModel);
@@ -125,7 +125,7 @@ public class ExtraFeeService {
         WeatherPhenomenonConditions updatedPhenomenon = phenomenonRepository.findFirstBy()
                 .orElseThrow(ExtraWeatherConditionsNotFoundException::new);
 
-        phenomenonRepository.save(Patcher.patch(updatedPhenomenon, fields));
+        phenomenonRepository.save(Updater.updateEntity(updatedPhenomenon, fields));
 
         EntityModel<WeatherPhenomenonConditions> entityModel = assembler.toModel(updatedPhenomenon);
         return ResponseEntity.status(HttpStatus.OK).body(entityModel);

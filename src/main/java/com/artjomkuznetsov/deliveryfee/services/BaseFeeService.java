@@ -1,16 +1,20 @@
 package com.artjomkuznetsov.deliveryfee.services;
 
 
+import com.artjomkuznetsov.deliveryfee.exceptions.BadRequestBodyException;
 import com.artjomkuznetsov.deliveryfee.utils.Updater;
 import com.artjomkuznetsov.deliveryfee.assemblers.RegionalBaseFeeModelAssembler;
 import com.artjomkuznetsov.deliveryfee.controllers.BaseFeeController;
 import com.artjomkuznetsov.deliveryfee.exceptions.RegionalBaseFeeNotFoundException;
 import com.artjomkuznetsov.deliveryfee.models.RegionalBaseFee;
 import com.artjomkuznetsov.deliveryfee.repositories.RegionalBaseFeeRepository;
+import org.apache.coyote.BadRequestException;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
@@ -71,7 +75,36 @@ public class BaseFeeService {
         RegionalBaseFee updatedBaseFee = repository.findByCity(city)
                 .orElseThrow(() -> new RegionalBaseFeeNotFoundException(city));
 
-        repository.save(Updater.updateEntity(updatedBaseFee, fields));
+        repository.save(updateBaseFee(updatedBaseFee, fields));
         return assembler.toModel(updatedBaseFee);
+    }
+
+    private static  <T> T updateBaseFee(T entity, Map<String, Object> fields) {
+        fields.forEach((key, value) -> {
+            Field field = ReflectionUtils.findField(entity.getClass(), key);
+            if (field != null) {
+                if (!field.getName().equals("id") && !field.getName().equals("city")) {
+                    field.setAccessible(true);
+                    // convert Double to Float, if the field data passed is a floating point number
+                    if (field.getType().equals(float.class) && value instanceof Double) {
+                        try {
+                            float floatValue = ((Double) value).floatValue();
+                            String fieldName = field.getName();
+                            if (fieldName.equals("carFee") || fieldName.equals("bikeFee") || fieldName.equals("scooterFee") && floatValue < 0) {
+                                throw new BadRequestException(fieldName + " cannot be negative.");
+                            }
+                            value = floatValue;
+                        } catch (BadRequestException e) {
+                            field.setAccessible(false);
+                            throw new BadRequestBodyException(field.getName() + " cannot be negative.");
+                        }
+                    }
+
+                    ReflectionUtils.setField(field, entity, value);
+                    field.setAccessible(false);
+                }
+            }
+        });
+        return entity;
     }
 }

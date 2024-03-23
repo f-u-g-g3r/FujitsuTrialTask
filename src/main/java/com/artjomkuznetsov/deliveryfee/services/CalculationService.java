@@ -1,6 +1,6 @@
 package com.artjomkuznetsov.deliveryfee.services;
 
-import com.artjomkuznetsov.deliveryfee.controllers.FeeController;
+import com.artjomkuznetsov.deliveryfee.controllers.DeliveryFeeController;
 import com.artjomkuznetsov.deliveryfee.controllers.responses.FeeResponse;
 import com.artjomkuznetsov.deliveryfee.exceptions.ExtraWeatherConditionsNotFoundException;
 import com.artjomkuznetsov.deliveryfee.exceptions.RegionalBaseFeeNotFoundException;
@@ -71,7 +71,7 @@ public class CalculationService {
     public EntityModel<FeeResponse> calculateFee(Optional<String> city, Optional<String> vehicle, Optional<LocalDateTime> dateTime)
             throws BadRequestException {
         FeeResponse feeResponse;
-        String uri = linkTo(methodOn(FeeController.class).getFee(city, vehicle, dateTime)).toString();
+        String uri = linkTo(methodOn(DeliveryFeeController.class).getFee(city, vehicle, dateTime)).toString();
 
         if (dateTime.isPresent()) {
             String formattedDateTime = dateTime.get().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);

@@ -146,7 +146,7 @@ public class ExtraFeeController {
                     @ApiResponse(responseCode = "500", content = @Content,
                             description = "Extra fees for air temperature conditions haven't been configured. The database may not be configured correctly.")
             })
-    @GetMapping("/air")
+    @GetMapping("/air-temperature-conditions")
     public EntityModel<AirTemperatureConditions> getAirConditions() {
         return service.getAirConditions();
     }
@@ -183,7 +183,7 @@ public class ExtraFeeController {
                     description = "Extra fees for wind speed conditions haven't been configured. The database may not be configured correctly.")
 
             })
-    @GetMapping("/wind")
+    @GetMapping("/wind-speed-conditions")
     public EntityModel<WindSpeedConditions> getWindConditions() {
         return service.getWindConditions();
     }
@@ -220,7 +220,7 @@ public class ExtraFeeController {
                     ))}), @ApiResponse(responseCode = "500", content = @Content,
                     description = "Extra fees for weather phenomenon conditions haven't been configured. The database may not be configured correctly.")
             })
-    @GetMapping("/phenomenon")
+    @GetMapping("/phenomenon-conditions")
     public EntityModel<WeatherPhenomenonConditions> getPhenomenonConditions() {
         return service.getPhenomenonConditions();
     }
@@ -260,7 +260,7 @@ public class ExtraFeeController {
                     @ApiResponse(responseCode = "500", content = @Content,
                             description = "Extra fees for air temperature conditions haven't been configured. The database may not be configured correctly.")
             })
-    @PutMapping("/air")
+    @PutMapping("/air-temperature-conditions")
     public EntityModel<AirTemperatureConditions> updateAirConditions(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "Fields to update and their new values.",
             content = {@Content(schema = @Schema(example = """
@@ -312,7 +312,7 @@ public class ExtraFeeController {
                     ))}), @ApiResponse(responseCode = "500", content = @Content,
                     description = "Extra fees for wind speed conditions haven't been configured. The database may not be configured correctly.")
             })
-    @PutMapping("/wind")
+    @PutMapping("/wind-speed-conditions")
     public ResponseEntity<?> updateWindConditions(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "Fields to update and their new values.",
             content = {@Content(schema = @Schema(example = """
@@ -364,7 +364,7 @@ public class ExtraFeeController {
                     ))}), @ApiResponse(responseCode = "500", content = @Content,
                     description = "Extra fees for weather phenomenon conditions haven't been configured. The database may not be configured correctly.")
             })
-    @PutMapping("/phenomenon")
+    @PutMapping("/phenomenon-conditions")
     public ResponseEntity<?> updatePhenomenonConditions(@io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "Fields to update and their new values.",
             content = {@Content(schema = @Schema(example = """

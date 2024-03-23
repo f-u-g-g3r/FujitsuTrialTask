@@ -80,4 +80,16 @@ public class WindSpeedConditions extends ExtraWeatherFee {
     public void setForbiddenSpeed(float forbiddenSpeed) {
         this.forbiddenSpeed = forbiddenSpeed;
     }
+
+    @Override
+    public String toString() {
+        return "WindSpeedConditions{" +
+                "id=" + id +
+                ", vehicleTypes=" + vehicleTypes +
+                ", betweenMin=" + betweenMin +
+                ", betweenMax=" + betweenMax +
+                ", betweenFee=" + betweenFee +
+                ", forbiddenSpeed=" + forbiddenSpeed +
+                '}';
+    }
 }

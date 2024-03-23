@@ -4,17 +4,14 @@ package com.artjomkuznetsov.deliveryfee.services;
 import com.artjomkuznetsov.deliveryfee.exceptions.BadRequestBodyException;
 import com.artjomkuznetsov.deliveryfee.utils.Updater;
 import com.artjomkuznetsov.deliveryfee.assemblers.RegionalBaseFeeModelAssembler;
-import com.artjomkuznetsov.deliveryfee.controllers.BaseFeeController;
+import com.artjomkuznetsov.deliveryfee.controllers.RegionalBaseFeeController;
 import com.artjomkuznetsov.deliveryfee.exceptions.RegionalBaseFeeNotFoundException;
 import com.artjomkuznetsov.deliveryfee.models.RegionalBaseFee;
 import com.artjomkuznetsov.deliveryfee.repositories.RegionalBaseFeeRepository;
-import org.apache.coyote.BadRequestException;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ReflectionUtils;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
@@ -41,11 +38,11 @@ public class BaseFeeService {
     public CollectionModel<EntityModel<RegionalBaseFee>> getAllBaseFees() {
         List<EntityModel<RegionalBaseFee>> baseFees = repository.findAll().stream()
                 .map(baseFee -> EntityModel.of(baseFee,
-                        linkTo(methodOn(BaseFeeController.class).oneByCity(baseFee.getCity())).withSelfRel(),
-                        linkTo(methodOn(BaseFeeController.class).all()).withRel("regionalBaseFees")))
+                        linkTo(methodOn(RegionalBaseFeeController.class).oneByCity(baseFee.getCity())).withSelfRel(),
+                        linkTo(methodOn(RegionalBaseFeeController.class).all()).withRel("regionalBaseFees")))
                 .toList();
 
-        return CollectionModel.of(baseFees, linkTo(methodOn(BaseFeeController.class).all()).withSelfRel());
+        return CollectionModel.of(baseFees, linkTo(methodOn(RegionalBaseFeeController.class).all()).withSelfRel());
     }
 
     /**
@@ -59,8 +56,8 @@ public class BaseFeeService {
                 .orElseThrow(() -> new RegionalBaseFeeNotFoundException(city));
 
         return EntityModel.of(baseFee,
-                linkTo(methodOn(BaseFeeController.class).oneByCity(city)).withSelfRel(),
-                linkTo(methodOn(BaseFeeController.class).all()).withRel("regionalBaseFees"));
+                linkTo(methodOn(RegionalBaseFeeController.class).oneByCity(city)).withSelfRel(),
+                linkTo(methodOn(RegionalBaseFeeController.class).all()).withRel("regionalBaseFees"));
     }
 
     /**

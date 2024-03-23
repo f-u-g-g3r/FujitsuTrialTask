@@ -41,7 +41,7 @@ public class ScheduledService {
      * parses XML responses, and saves relevant observations to the database.
      * It's scheduled to run periodically using the @Scheduled annotation with a specified cron expression.
      */
-    @Scheduled(cron = "0 15 * * * *")//@Scheduled(cron = "0 15 * * * *")
+    @Scheduled(cron = "0 15 * * * *")
     public void getWeatherDataFromAPI() {
         String responseData = restTemplate.getForObject(ESTONIAN_WEATHER_API_URL, String.class);
         if (responseData != null) {

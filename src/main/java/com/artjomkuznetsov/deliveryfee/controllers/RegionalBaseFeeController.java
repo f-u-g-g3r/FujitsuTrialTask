@@ -18,10 +18,10 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/base-fees")
-public class BaseFeeController {
+public class RegionalBaseFeeController {
     private final BaseFeeService baseFeeService;
 
-    public BaseFeeController(BaseFeeService baseFeeService) {
+    public RegionalBaseFeeController(BaseFeeService baseFeeService) {
         this.baseFeeService = baseFeeService;
     }
 
@@ -29,7 +29,7 @@ public class BaseFeeController {
      * Retrieve all regional base fees. The response is all the regional base fees with links to the corresponding operations.
      * @return A CollectionModel containing EntityModel instances of all RegionalBaseFee entities.
      */
-    @Tag(name = "base-fee-controller-get")
+    @Tag(name = "regional-base-fee-controller-get")
     @Operation(
             summary = "Retrieve all regional base fees.",
             description = "The response is all the regional base fees with links to the corresponding operations.",
@@ -74,7 +74,7 @@ public class BaseFeeController {
      * @return An EntityModel representing the RegionalBaseFee entity for the specified city.
      * @throws RegionalBaseFeeNotFoundException if no RegionalBaseFee is found for the specified city.
      */
-    @Tag(name = "base-fee-controller-get")
+    @Tag(name = "regional-base-fee-controller-get")
     @Operation(summary = "Retrieve one regional base fee for the specified city.",
             description = "The response is one regional base fee with links to the corresponding operations.",
             responses = {
@@ -114,7 +114,7 @@ public class BaseFeeController {
      * @return EntityModel containing the updated RegionalBaseFee with links to the corresponding operations.
      * @throws RegionalBaseFeeNotFoundException if no RegionalBaseFee is found for the specified city.
      */
-    @Tag(name = "base-fee-controller-put")
+    @Tag(name = "regional-base-fee-controller-put")
     @Operation(summary = "Update regional base fee.",
             description = "Update the existing regional base fee for the specified city by " +
                     " specifying the fields to update and their new values in the request body." +

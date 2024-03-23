@@ -86,4 +86,17 @@ public class WeatherData {
     public void setObservationTimestamp(Long observationTimestamp) {
         this.observationTimestamp = observationTimestamp;
     }
+
+    @Override
+    public String toString() {
+        return "WeatherData{" +
+                "id=" + id +
+                ", station='" + station + '\'' +
+                ", stationWMO='" + stationWMO + '\'' +
+                ", airTemperature=" + airTemperature +
+                ", windSpeed=" + windSpeed +
+                ", weatherPhenomenon='" + weatherPhenomenon + '\'' +
+                ", observationTimestamp=" + observationTimestamp +
+                '}';
+    }
 }

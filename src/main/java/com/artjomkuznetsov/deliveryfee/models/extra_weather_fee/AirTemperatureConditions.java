@@ -91,4 +91,17 @@ public class AirTemperatureConditions extends ExtraWeatherFee {
     public void setBetweenFee(float betweenFee) {
         this.betweenFee = betweenFee;
     }
+
+    @Override
+    public String toString() {
+        return "AirTemperatureConditions{" +
+                "id=" + id +
+                ", vehicleTypes=" + vehicleTypes +
+                ", lessThan=" + lessThan +
+                ", lessThanFee=" + lessThanFee +
+                ", betweenMin=" + betweenMin +
+                ", betweenMax=" + betweenMax +
+                ", betweenFee=" + betweenFee +
+                '}';
+    }
 }

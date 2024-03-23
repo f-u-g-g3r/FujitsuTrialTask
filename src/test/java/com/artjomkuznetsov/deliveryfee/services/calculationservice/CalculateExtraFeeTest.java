@@ -39,10 +39,7 @@ class CalculateExtraFeeTest {
     WeatherPhenomenonConditions weatherPhenomenonConditions = new WeatherPhenomenonConditions(
             List.of("scooter", "bike"), 1, 0.5f, List.of("Glaze", "Hail", "Thunder"));
 
-    WeatherData weatherDataTallinn = new WeatherData("Tallinn-Harku", "26038", 5, 5, "", 1710412650L);
-    WeatherData weatherDataTartu = new WeatherData("Tartu-Tõravere", "26242", 5, 5, "", 1710412650L);
-    WeatherData weatherDataParnu = new WeatherData("Pärnu", "41803", 5, 5, "", 1710412650L);
-
+    WeatherData weatherData = new WeatherData("Tallinn-Harku", "26038", 5, 5, "", 1710412650L);
 
     @BeforeEach
     void setUp() {
@@ -54,142 +51,142 @@ class CalculateExtraFeeTest {
     // ---------------------------------------------------
 
     @Test
-    void calculateExtraFeeTallinnScooterAirTempMinus15Returns1() {
-        weatherDataTallinn.setAirTemperature(-15);
-        float extraFee = calculationService.calculateExtraFee("scooter", weatherDataTallinn);
+    void calculateExtraFeeScooterAirTempMinus15Returns1() {
+        weatherData.setAirTemperature(-15);
+        float extraFee = calculationService.calculateExtraFee("scooter", weatherData);
         Assertions.assertEquals(1, extraFee);
     }
 
     @Test
-    void calculateExtraFeeTallinnBikeAirTempMinus15Returns1() {
-        weatherDataTallinn.setAirTemperature(-15);
-        float extraFee = calculationService.calculateExtraFee("bike", weatherDataTallinn);
+    void calculateExtraFeeBikeAirTempMinus15Returns1() {
+        weatherData.setAirTemperature(-15);
+        float extraFee = calculationService.calculateExtraFee("bike", weatherData);
         Assertions.assertEquals(1, extraFee);
     }
 
     @Test
-    void calculateExtraFeeTallinnScooterAirTempMinus5Returns0_5() {
-        weatherDataTallinn.setAirTemperature(-5);
-        float extraFee = calculationService.calculateExtraFee("scooter", weatherDataTallinn);
+    void calculateExtraFeeScooterAirTempMinus5Returns0_5() {
+        weatherData.setAirTemperature(-5);
+        float extraFee = calculationService.calculateExtraFee("scooter", weatherData);
         Assertions.assertEquals(0.5, extraFee);
     }
 
     @Test
-    void calculateExtraFeeTallinnBikeAirTempMinus5Returns0_5() {
-        weatherDataTallinn.setAirTemperature(-5);
-        float extraFee = calculationService.calculateExtraFee("bike", weatherDataTallinn);
+    void calculateExtraFeeBikeAirTempMinus5Returns0_5() {
+        weatherData.setAirTemperature(-5);
+        float extraFee = calculationService.calculateExtraFee("bike", weatherData);
         Assertions.assertEquals(0.5, extraFee);
     }
 
     @Test
-    void calculateExtraFeeTallinnBikeAirTempPlus10Returns0() {
-        weatherDataTallinn.setAirTemperature(10);
-        float extraFee = calculationService.calculateExtraFee("bike", weatherDataTallinn);
+    void calculateExtraFeeBikeAirTempPlus10Returns0() {
+        weatherData.setAirTemperature(10);
+        float extraFee = calculationService.calculateExtraFee("bike", weatherData);
         Assertions.assertEquals(0, extraFee);
     }
 
     @Test
-    void calculateExtraFeeTallinnBikeWindSpeed15Returns0_5() {
-        weatherDataTallinn.setWindSpeed(15);
-        float extraFee = calculationService.calculateExtraFee("bike", weatherDataTallinn);
+    void calculateExtraFeeBikeWindSpeed15Returns0_5() {
+        weatherData.setWindSpeed(15);
+        float extraFee = calculationService.calculateExtraFee("bike", weatherData);
         Assertions.assertEquals(0.5, extraFee);
     }
 
     @Test
-    void calculateExtraFeeTallinnBikeWindSpeed5Returns0() {
-        weatherDataTallinn.setWindSpeed(5);
-        float extraFee = calculationService.calculateExtraFee("bike", weatherDataTallinn);
+    void calculateExtraFeeBikeWindSpeed5Returns0() {
+        weatherData.setWindSpeed(5);
+        float extraFee = calculationService.calculateExtraFee("bike", weatherData);
         Assertions.assertEquals(0, extraFee);
     }
 
     @Test
-    void calculateExtraFeeTallinnBikeForbiddenWindSpeedReturnsMinus1() {
-        weatherDataTallinn.setWindSpeed(30);
-        float extraFee = calculationService.calculateExtraFee("bike", weatherDataTallinn);
+    void calculateExtraFeeBikeForbiddenWindSpeedReturnsMinus1() {
+        weatherData.setWindSpeed(30);
+        float extraFee = calculationService.calculateExtraFee("bike", weatherData);
         Assertions.assertEquals(-1, extraFee);
     }
 
     @Test
-    void calculateExtraFeeTallinnScooterDriftingSnowReturns1() {
-        weatherDataTallinn.setWeatherPhenomenon("Drifting snow");
-        float extraFee = calculationService.calculateExtraFee("scooter", weatherDataTallinn);
+    void calculateExtraFeeScooterDriftingSnowReturns1() {
+        weatherData.setWeatherPhenomenon("Drifting snow");
+        float extraFee = calculationService.calculateExtraFee("scooter", weatherData);
         Assertions.assertEquals(1, extraFee);
     }
 
     @Test
-    void calculateExtraFeeTallinnScooterLightSleetReturns1() {
-        weatherDataTallinn.setWeatherPhenomenon("Light sleet");
-        float extraFee = calculationService.calculateExtraFee("scooter", weatherDataTallinn);
+    void calculateExtraFeeScooterLightSleetReturns1() {
+        weatherData.setWeatherPhenomenon("Light sleet");
+        float extraFee = calculationService.calculateExtraFee("scooter", weatherData);
         Assertions.assertEquals(1, extraFee);
     }
 
     @Test
-    void calculateExtraFeeTallinnScooterHeavyShowerReturns0_5() {
-        weatherDataTallinn.setWeatherPhenomenon("Heavy shower");
-        float extraFee = calculationService.calculateExtraFee("scooter", weatherDataTallinn);
+    void calculateExtraFeeScooterHeavyShowerReturns0_5() {
+        weatherData.setWeatherPhenomenon("Heavy shower");
+        float extraFee = calculationService.calculateExtraFee("scooter", weatherData);
         Assertions.assertEquals(0.5, extraFee);
     }
 
     @Test
-    void calculateExtraFeeTallinnScooterGlazeReturnsMinus1() {
-        weatherDataTallinn.setWeatherPhenomenon("Glaze");
-        float extraFee = calculationService.calculateExtraFee("scooter", weatherDataTallinn);
+    void calculateExtraFeeScooterGlazeReturnsMinus1() {
+        weatherData.setWeatherPhenomenon("Glaze");
+        float extraFee = calculationService.calculateExtraFee("scooter", weatherData);
         Assertions.assertEquals(-1, extraFee);
     }
 
     @Test
-    void calculateExtraFeeTallinnScooterHailReturnsMinus1() {
-        weatherDataTallinn.setWeatherPhenomenon("Hail");
-        float extraFee = calculationService.calculateExtraFee("scooter", weatherDataTallinn);
+    void calculateExtraFeeScooterHailReturnsMinus1() {
+        weatherData.setWeatherPhenomenon("Hail");
+        float extraFee = calculationService.calculateExtraFee("scooter", weatherData);
         Assertions.assertEquals(-1, extraFee);
     }
 
     @Test
-    void calculateExtraFeeTallinnScooterThunderReturnsMinus1() {
-        weatherDataTallinn.setWeatherPhenomenon("Thunder");
-        float extraFee = calculationService.calculateExtraFee("scooter", weatherDataTallinn);
+    void calculateExtraFeeScooterThunderReturnsMinus1() {
+        weatherData.setWeatherPhenomenon("Thunder");
+        float extraFee = calculationService.calculateExtraFee("scooter", weatherData);
         Assertions.assertEquals(-1, extraFee);
     }
 
     @Test
-    void calculateExtraFeeTallinnCarThunderReturns0() {
-        weatherDataTallinn.setWeatherPhenomenon("Thunder");
-        float extraFee = calculationService.calculateExtraFee("car", weatherDataTallinn);
+    void calculateExtraFeeCarThunderReturns0() {
+        weatherData.setWeatherPhenomenon("Thunder");
+        float extraFee = calculationService.calculateExtraFee("car", weatherData);
         Assertions.assertEquals(0, extraFee);
     }
 
     @Test
-    void calculateExtraFeeTallinnBikeAirTempMinus12WindSpeed15Returns1_5() {
-        weatherDataTallinn.setAirTemperature(-12);
-        weatherDataTallinn.setWindSpeed(15);
-        float extraFee = calculationService.calculateExtraFee("bike", weatherDataTallinn);
+    void calculateExtraFeeBikeAirTempMinus12WindSpeed15Returns1_5() {
+        weatherData.setAirTemperature(-12);
+        weatherData.setWindSpeed(15);
+        float extraFee = calculationService.calculateExtraFee("bike", weatherData);
         Assertions.assertEquals(1.5, extraFee);
     }
 
     @Test
-    void calculateExtraFeeTallinnBikeAirTempMinus12WindSpeed15SnowReturns2_5() {
-        weatherDataTallinn.setAirTemperature(-12);
-        weatherDataTallinn.setWindSpeed(15);
-        weatherDataTallinn.setWeatherPhenomenon("Light snowfall");
-        float extraFee = calculationService.calculateExtraFee("bike", weatherDataTallinn);
+    void calculateExtraFeeBikeAirTempMinus12WindSpeed15SnowReturns2_5() {
+        weatherData.setAirTemperature(-12);
+        weatherData.setWindSpeed(15);
+        weatherData.setWeatherPhenomenon("Light snowfall");
+        float extraFee = calculationService.calculateExtraFee("bike", weatherData);
         Assertions.assertEquals(2.5, extraFee);
     }
 
     @Test
-    void calculateExtraFeeTallinnBikeAirTempMinus12WindSpeed15RainReturns2() {
-        weatherDataTallinn.setAirTemperature(-12);
-        weatherDataTallinn.setWindSpeed(15);
-        weatherDataTallinn.setWeatherPhenomenon("Light rain");
-        float extraFee = calculationService.calculateExtraFee("bike", weatherDataTallinn);
+    void calculateExtraFeeBikeAirTempMinus12WindSpeed15RainReturns2() {
+        weatherData.setAirTemperature(-12);
+        weatherData.setWindSpeed(15);
+        weatherData.setWeatherPhenomenon("Light rain");
+        float extraFee = calculationService.calculateExtraFee("bike", weatherData);
         Assertions.assertEquals(2, extraFee);
     }
 
     @Test
-    void calculateExtraFeeTallinnBikeAirTempMinus12WindSpeed15ThunderReturnsMinus1() {
-        weatherDataTallinn.setAirTemperature(-12);
-        weatherDataTallinn.setWindSpeed(15);
-        weatherDataTallinn.setWeatherPhenomenon("Thunder");
-        float extraFee = calculationService.calculateExtraFee("bike", weatherDataTallinn);
+    void calculateExtraFeeBikeAirTempMinus12WindSpeed15ThunderReturnsMinus1() {
+        weatherData.setAirTemperature(-12);
+        weatherData.setWindSpeed(15);
+        weatherData.setWeatherPhenomenon("Thunder");
+        float extraFee = calculationService.calculateExtraFee("bike", weatherData);
         Assertions.assertEquals(-1, extraFee);
     }
 }

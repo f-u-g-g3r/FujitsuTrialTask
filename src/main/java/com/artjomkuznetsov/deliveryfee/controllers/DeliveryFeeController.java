@@ -25,11 +25,11 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/fee")
-public class FeeController {
+public class DeliveryFeeController {
 
     private final CalculationService calculationService;
 
-    public FeeController(CalculationService calculationService) {
+    public DeliveryFeeController(CalculationService calculationService) {
         this.calculationService = calculationService;
     }
 
@@ -46,7 +46,7 @@ public class FeeController {
      * @throws ExtraWeatherConditionsNotFoundException if one of weather conditions are not found.
      * @throws RegionalBaseFeeNotFoundException if no RegionalBaseFee is found for the specified city.
      */
-    @Tag(name = "fee-controller-get")
+    @Tag(name = "delivery-fee-controller-get")
     @Operation(summary = "Calculate fee",
             description = "Calculate fee based on specified city and vehicle. If dateTime parameter is not entered " +
                     "the last weather data will be taken. Returns an EntityModel with calculated fee or the error message")

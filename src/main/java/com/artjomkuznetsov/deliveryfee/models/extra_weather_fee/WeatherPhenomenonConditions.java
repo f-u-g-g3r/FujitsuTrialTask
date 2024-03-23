@@ -73,4 +73,15 @@ public class WeatherPhenomenonConditions extends ExtraWeatherFee {
     public void setForbiddenPhenomenons(List<String> forbiddenPhenomenons) {
         this.forbiddenPhenomenons = forbiddenPhenomenons;
     }
+
+    @Override
+    public String toString() {
+        return "WeatherPhenomenonConditions{" +
+                "id=" + id +
+                ", vehicleTypes=" + vehicleTypes +
+                ", snowOrSleetFee=" + snowOrSleetFee +
+                ", rainFee=" + rainFee +
+                ", forbiddenPhenomenons=" + forbiddenPhenomenons +
+                '}';
+    }
 }

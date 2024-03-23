@@ -116,4 +116,25 @@ public class ExtraFeeTest {
                 .body("snowOrSleetFee", equalTo(updatedPhenomenonConditions.get("snowOrSleetFee")));
     }
 
+    @Test
+    public void updateAirTemperatureConditionsNegativeFeeError() {
+        Specifications.installSpecification(Specifications.requestSpec(url), Specifications.responseSpecBadRequest400());
+        given()
+                .body(Map.of("lessThanFee", -2))
+                .when()
+                .put("/air")
+                .then()
+                .body("error", equalTo("lessThanFee cannot be negative."));
+    }
+
+    @Test
+    public void updateAirTemperatureConditionsNonNumberFeeError() {
+        Specifications.installSpecification(Specifications.requestSpec(url), Specifications.responseSpecBadRequest400());
+        given()
+                .body(Map.of("lessThanFee", "abc"))
+                .when()
+                .put("/air")
+                .then()
+                .body("error", equalTo("lessThanFee must be a number."));
+    }
 }

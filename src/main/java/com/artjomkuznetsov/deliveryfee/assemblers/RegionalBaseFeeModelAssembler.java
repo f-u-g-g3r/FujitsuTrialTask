@@ -1,6 +1,6 @@
 package com.artjomkuznetsov.deliveryfee.assemblers;
 
-import com.artjomkuznetsov.deliveryfee.controllers.BaseFeeController;
+import com.artjomkuznetsov.deliveryfee.controllers.RegionalBaseFeeController;
 import com.artjomkuznetsov.deliveryfee.models.RegionalBaseFee;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
@@ -18,7 +18,7 @@ public class RegionalBaseFeeModelAssembler implements RepresentationModelAssembl
     public EntityModel<RegionalBaseFee> toModel(@NonNull RegionalBaseFee baseFee) {
 
         return EntityModel.of(baseFee,
-                linkTo(methodOn(BaseFeeController.class).oneByCity(baseFee.getCity()    )).withSelfRel(),
-                linkTo(methodOn(BaseFeeController.class).all()).withRel("regionalBaseFees"));
+                linkTo(methodOn(RegionalBaseFeeController.class).oneByCity(baseFee.getCity()    )).withSelfRel(),
+                linkTo(methodOn(RegionalBaseFeeController.class).all()).withRel("regionalBaseFees"));
     }
 }

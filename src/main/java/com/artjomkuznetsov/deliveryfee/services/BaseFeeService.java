@@ -23,6 +23,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
 public class BaseFeeService {
+    private static final List<String> NON_NEGATIVE_FIELDS = List.of("carFee", "bikeFee", "scooterFee");
 
     private final RegionalBaseFeeRepository repository;
     private final RegionalBaseFeeModelAssembler assembler;
@@ -70,41 +71,14 @@ public class BaseFeeService {
      * @param city The name of the city for which to update the RegionalBaseFee.
      * @return EntityModel containing the updated RegionalBaseFee with links to the corresponding operations.
      * @throws RegionalBaseFeeNotFoundException if no RegionalBaseFee is found for the specified city.
+     * @throws BadRequestBodyException If the updated float value of a field in {@code NON_NEGATIVE_FIELDS} is negative.
+     * @throws BadRequestBodyException If the value of a field is not a number or not compatible with float type.
      */
     public EntityModel<RegionalBaseFee> updateBaseFee(Map<String, Object> fields, String city) {
         RegionalBaseFee updatedBaseFee = repository.findByCity(city)
                 .orElseThrow(() -> new RegionalBaseFeeNotFoundException(city));
 
-        repository.save(updateBaseFee(updatedBaseFee, fields));
+        repository.save(Updater.updateEntity(updatedBaseFee, fields, NON_NEGATIVE_FIELDS));
         return assembler.toModel(updatedBaseFee);
-    }
-
-    private static  <T> T updateBaseFee(T entity, Map<String, Object> fields) {
-        fields.forEach((key, value) -> {
-            Field field = ReflectionUtils.findField(entity.getClass(), key);
-            if (field != null) {
-                if (!field.getName().equals("id") && !field.getName().equals("city")) {
-                    field.setAccessible(true);
-                    // convert Double to Float, if the field data passed is a floating point number
-                    if (field.getType().equals(float.class) && value instanceof Double) {
-                        try {
-                            float floatValue = ((Double) value).floatValue();
-                            String fieldName = field.getName();
-                            if (fieldName.equals("carFee") || fieldName.equals("bikeFee") || fieldName.equals("scooterFee") && floatValue < 0) {
-                                throw new BadRequestException(fieldName + " cannot be negative.");
-                            }
-                            value = floatValue;
-                        } catch (BadRequestException e) {
-                            field.setAccessible(false);
-                            throw new BadRequestBodyException(field.getName() + " cannot be negative.");
-                        }
-                    }
-
-                    ReflectionUtils.setField(field, entity, value);
-                    field.setAccessible(false);
-                }
-            }
-        });
-        return entity;
     }
 }

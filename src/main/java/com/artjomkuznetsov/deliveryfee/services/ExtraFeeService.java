@@ -1,5 +1,6 @@
 package com.artjomkuznetsov.deliveryfee.services;
 
+import com.artjomkuznetsov.deliveryfee.exceptions.BadRequestBodyException;
 import com.artjomkuznetsov.deliveryfee.utils.Updater;
 import com.artjomkuznetsov.deliveryfee.assemblers.ExtraFeeModelAssembler;
 import com.artjomkuznetsov.deliveryfee.controllers.ExtraFeeController;
@@ -25,6 +26,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
 public class ExtraFeeService {
+    private static final List<String> NON_NEGATIVE_FIELDS = List.of("lessThanFee", "betweenFee", "snowOrSleetFee", "rainFee");
+
     private final AirTemperatureConditionsRepository airRepository;
     private final WindSpeedConditionsRepository windRepository;
     private final WeatherPhenomenonConditionsRepository phenomenonRepository;
@@ -89,12 +92,14 @@ public class ExtraFeeService {
      * @param fields A Map containing the fields to update and their new values.
      * @return EntityModel indicating the success of the update operation and containing the updated air temperature conditions with links to the corresponding operations.
      * @throws ExtraWeatherConditionsNotFoundException if the air temperature conditions are not found.
+     * @throws BadRequestBodyException If the updated float value of a field in {@code NON_NEGATIVE_FIELDS} is negative.
+     * @throws BadRequestBodyException If the value of a field is not a number or not compatible with float type.
      */
     public EntityModel<AirTemperatureConditions> updateAirTemperatureConditions(Map<String, Object> fields) {
         AirTemperatureConditions updatedTemperature = airRepository.findFirstBy()
                 .orElseThrow(ExtraWeatherConditionsNotFoundException::new);
 
-        airRepository.save(Updater.updateEntity(updatedTemperature, fields));
+        airRepository.save(Updater.updateEntity(updatedTemperature, fields, NON_NEGATIVE_FIELDS));
 
         return assembler.toModel(updatedTemperature);
     }
@@ -104,12 +109,14 @@ public class ExtraFeeService {
      * @param fields A Map containing the fields to update and their new values.
      * @return EntityModel indicating the success of the update operation and containing the updated wind speed conditions with links to the corresponding operations.
      * @throws ExtraWeatherConditionsNotFoundException if the wind speed conditions are not found.
+     * @throws BadRequestBodyException If the updated float value of a field in {@code NON_NEGATIVE_FIELDS} is negative.
+     * @throws BadRequestBodyException If the value of a field is not a number or not compatible with float type.
      */
     public ResponseEntity<?> updateWindConditions(Map<String, Object> fields) {
         WindSpeedConditions updatedWind = windRepository.findFirstBy()
                 .orElseThrow(ExtraWeatherConditionsNotFoundException::new);
 
-        windRepository.save(Updater.updateEntity(updatedWind, fields));
+        windRepository.save(Updater.updateEntity(updatedWind, fields, NON_NEGATIVE_FIELDS));
 
         EntityModel<WindSpeedConditions> entityModel = assembler.toModel(updatedWind);
         return ResponseEntity.status(HttpStatus.OK).body(entityModel);
@@ -120,12 +127,14 @@ public class ExtraFeeService {
      * @param fields A Map containing the fields to update and their new values.
      * @return EntityModel indicating the success of the update operation and containing the updated weather phenomenon conditions with links to the corresponding operations.
      * @throws ExtraWeatherConditionsNotFoundException if the weather phenomenon conditions are not found.
+     * @throws BadRequestBodyException If the updated float value of a field in {@code NON_NEGATIVE_FIELDS} is negative.
+     * @throws BadRequestBodyException If the value of a field is not a number or not compatible with float type.
      */
     public ResponseEntity<?> updatePhenomenonConditions(Map<String, Object> fields) {
         WeatherPhenomenonConditions updatedPhenomenon = phenomenonRepository.findFirstBy()
                 .orElseThrow(ExtraWeatherConditionsNotFoundException::new);
 
-        phenomenonRepository.save(Updater.updateEntity(updatedPhenomenon, fields));
+        phenomenonRepository.save(Updater.updateEntity(updatedPhenomenon, fields, NON_NEGATIVE_FIELDS));
 
         EntityModel<WeatherPhenomenonConditions> entityModel = assembler.toModel(updatedPhenomenon);
         return ResponseEntity.status(HttpStatus.OK).body(entityModel);

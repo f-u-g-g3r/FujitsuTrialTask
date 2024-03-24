@@ -3,12 +3,10 @@ package com.artjomkuznetsov.deliveryfee.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
-import java.io.Serializable;
-
 
 @Entity
 @Table(name = "regional_base_fee")
-public class RegionalBaseFee implements Serializable {
+public class RegionalBaseFee {
     @NotNull
     private @GeneratedValue(strategy = GenerationType.IDENTITY) @Id int id;
 

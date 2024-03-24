@@ -1,0 +1,16 @@
+com.artjomkuznetsov.deliveryfee
+com.artjomkuznetsov.deliveryfee.advices
+com.artjomkuznetsov.deliveryfee.assemblers
+com.artjomkuznetsov.deliveryfee.config
+com.artjomkuznetsov.deliveryfee.controllers
+com.artjomkuznetsov.deliveryfee.controllers.responses
+com.artjomkuznetsov.deliveryfee.database
+com.artjomkuznetsov.deliveryfee.exceptions
+com.artjomkuznetsov.deliveryfee.models
+com.artjomkuznetsov.deliveryfee.models.extra_weather_fee
+com.artjomkuznetsov.deliveryfee.repositories
+com.artjomkuznetsov.deliveryfee.services
+com.artjomkuznetsov.deliveryfee.services.api
+com.artjomkuznetsov.deliveryfee.services.api.spec
+com.artjomkuznetsov.deliveryfee.services.calculationservice
+com.artjomkuznetsov.deliveryfee.utils

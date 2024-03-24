@@ -25,7 +25,9 @@ public class OpenAPIConfiguration {
         Info info = new Info()
                 .title("Delivery fee calculator")
                 .version("1.0")
-                .description("API designed to calculate delivery fees for food couriers based on regional rates, vehicle types, and weather conditions.")
+                .description("API designed to calculate delivery fees for food couriers based on regional rates, vehicle types, and weather conditions. <br /><br />" +
+                            "Allowed cities: Tallinn, Tartu, Pärnu.<br /><br />" +
+                        "Allowed vehicles: car, scooter, bike.")
                 .contact(myContact);
 
         return new OpenAPI().info(info).servers(List.of(server));

@@ -6,6 +6,11 @@ It is a sub-functionality of the food delivery application, which calculates the
 
 Weather data for the application is taken from the [ilmateenistus.ee](https://www.ilmateenistus.ee/teenused/ilmainfo/eesti-vaatlusandmed-xml/).
 
+## Starting the application
+
+In order to run the application, you need to run the DeliveryFeeApplication class.
+
+The frequency of the cronjob for requesting weather data can be configured in the *application.properties* file in the *weather.data.cron.expression* field.
 ## Bonus tasks
 
 Business rules for base fees and extra fees can be managed through the REST interface.
